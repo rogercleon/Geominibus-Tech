@@ -41,6 +41,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::prefix('mobile')->group(function () {
+    Route::post('/register', [App\Http\Controllers\UserController::class, 'Registro']);
+    Route::post('/login', [App\Http\Controllers\UserController::class, 'Login']);
+    Route::middleware('auth:sanctum')->post('/logout', [App\Http\Controllers\UserController::class, 'Logout']);
+});
+//Route::post('/register', [App\Http\Controllers\UserController::class, 'Registro']);
+//Route::post('/login', [App\Http\Controllers\UserController::class, 'Login']);
+//Route::middleware('auth:sanctum')->post('/logout', [App\Http\Controllers\UserController::class, 'Logout']);
+
+
 //Route::get('/Bus/pdf', [App\Http\Controllers\BusControler::class, 'pdf'])->name('Bus.pdf');
 Route::get('/Minibus/pdf', [App\Http\Controllers\MinibusController::class, 'pdf'])->name('Minibus.pdf');
 Route::get('/Agencia/pdf', [App\Http\Controllers\AgenciaController::class, 'pdf'])->name('Agencia.pdf');
@@ -52,6 +63,10 @@ Route::get('/Horario/pdf', [App\Http\Controllers\HorarioController::class, 'pdf'
 Route::get('/Cliente/pdf', [App\Http\Controllers\ClienteController::class, 'pdf'])->name('Cliente.pdf');
 Route::get('/Boleto/pdf', [App\Http\Controllers\BoletoController::class, 'pdf'])->name('Boleto.pdf');
 Route::get('/Encomienda/pdf', [App\Http\Controllers\EncomiendaController::class, 'pdf'])->name('Encomienda.pdf');
+
+//Route::get('/Boleto/pdfMinibus/{minibusId}', [App\Http\Controllers\BoletoController::class, 'pdfMinibus'])->name('Boleto.pdfMinibus');
+Route::get('/pdfMinibus/{horarioId}', [App\Http\Controllers\BoletoController::class, 'pdfMinibus'])->name('Boleto.pdfMinibus');
+
 
 
 Route::get('/Boleto/{id_horario}', [App\Http\Controllers\BoletoController::class, 'create'])->name('Boleto.create');

@@ -32,6 +32,39 @@ class BoletoController extends Controller
         $pdf = PDF::loadView('Boleto.pdf', ['boletos' => $boletos]);
         return $pdf->stream();
     }
+    public function pdfMinibus($horarioId)
+    {
+        //$boletos = Boleto::where('horario_id', $horarioId)
+        //    ->with(['cliente', 'horario.ruta', 'horario.asignarMinibus.minibus'])
+        //    ->get();
+
+        $boletos = Boleto::where('id_horario', $horarioId)
+            ->with(['cliente', 'horario.ruta', 'horario.asignarMinibus.minibus']) // Cargamos las relaciones necesarias
+            ->get();
+
+        $pdf = PDF::loadView('Boleto.pdfMinibus', ['boletos' => $boletos]);
+
+        // Devolver el PDF generado como stream
+        return $pdf->stream();
+    }
+    /*public function pdfMinibus($horarioId)
+    {
+        $boletos = Boleto::whereHas('horario', function ($query) use ($horarioId) {
+            $query->where('id', $horarioId);
+        })->with(['cliente', 'horario.ruta', 'horario.asignarMinibus.minibus'])->get();
+        $pdf = PDF::loadView('Boleto.pdfMinibus', ['boletos' => $boletos]);
+
+        return $pdf->stream();
+    }
+    public function pdfMinibus($minibusId)
+    {
+        $boletos = Boleto::whereHas('horario.asignarMinibus.minibus', function ($query) use ($minibusId) {
+            $query->where('id', $minibusId);
+        })->with(['cliente', 'horario.ruta', 'horario.asignarMinibus.minibus'])->get();
+        $pdf = PDF::loadView('Boleto.pdfMinibus', ['boletos' => $boletos]);
+
+        return $pdf->stream();
+    }*/
 
     /**
      * Show the form for creating a new resource.
@@ -142,14 +175,14 @@ class BoletoController extends Controller
                 'Precio.regex' => 'El precio debe tener máximo 2 decimales.',
             ]
         );
-    
+
         $boleto = Boleto::findOrFail($id);
         $boleto->id_cliente = $request->id_cliente;
         $boleto->id_horario = $request->id_horario;
         $boleto->Asiento = $request->Asiento;
         $boleto->Precio = $request->Precio;
         $boleto->save();
-    
+
         return redirect()->route('Boleto.index')->with('success', 'Boleto actualizado con éxito.');
     }
 

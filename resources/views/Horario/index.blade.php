@@ -7,39 +7,47 @@
 @stop
 
 @section('content')
+@role('Administrador|Vendedor')
 <a href="Horario/create" class="btn btn-primary active">REGISTRAR HORARIOS</a>
 <a href="{{ route('Horario.pdf')}}" class="btn btn-info" style="margin-left: 15px">PDF</a><br><br>
+@endrole
 <table id="horarios" class="table table-striped" style="width:100%">
     <thead class="bg-primary text-white">
         <tr>
-            <th scope="col">ID</th>
+            <!--<th scope="col">ID</th>-->
             <th scope="col">Boletos</th>
             <th scope="col">Ruta</th>
-            <th scope="col">Minibús</th>
-            <th scope="col">Precio</th>
             <th scope="col">Fecha</th>
             <th scope="col">Hora</th>
+            <th scope="col">Minibús</th>
+            <th scope="col">Precio</th>
+            @role('Administrador|Vendedor')
             <th scope="col">Acciones</th>
+            @endrole
         </tr>
     </thead>
     <tbody>
         @foreach($horarios as $horario)
         <tr>
-            <td>{{$horario->id}}</td>
+            <!--<td>{{$horario->id}}</td>-->
             <td><a href="/Boleto/{{$horario->id}}" class="btn btn-primary"> <i class="fas fa-ticket-alt"></i> COMPRAR </a></td>
             <td>{{$horario->ruta->Origen}} - {{$horario->ruta->Destino}}</td>
-            <td>Minibús {{$horario->asignarMinibus->minibus->Num_Minibus}}</td>
-            <td>Bs {{number_format($horario->ruta->Precio, 2, ',', '.') }}</td>
             <td>{{$horario->Fecha}}</td>
             <td>{{$horario->Hora}}</td>
+            <td>Minibús {{$horario->asignarMinibus->minibus->Num_Minibus}}</td>
+            <td>Bs {{number_format($horario->ruta->Precio, 2, ',', '.') }}</td>
+            @role('Administrador|Vendedor')
             <td>
                 <form action="{{route('Horario.destroy',$horario->id)}}" method="POST">
                     @csrf
                     @method('DELETE')
                     <a href="/Horario/{{$horario->id}}/edit" class="btn btn-success"><i class="fas fa-edit"></i> EDITAR</a>
+                    @role('Administrador')
                     <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ELIMINAR</button>
+                    @endrole
                 </form>
             </td>
+            @endrole
         </tr>
         @endforeach
     </tbody>

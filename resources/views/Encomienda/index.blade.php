@@ -7,8 +7,10 @@
 @stop
 
 @section('content')
+@role('Administrador|Vendedor')
 <a href="Encomienda/create" class="btn btn-primary active">REGISTRAR ENCOMIENDAS</a>
 <a href="{{ route('Encomienda.pdf')}}" class="btn btn-info" style="margin-left: 15px">PDF</a><br><br>
+@endrole
 <table id="encomiendas" class="table table-striped" style="width:100%">
     <thead class="bg-primary text-white">
         <tr>
@@ -19,7 +21,9 @@
             <th scope="col">Fecha Rec</th>-->
             <th scope="col">Estado</th>
             <th scope="col">Precio</th>
+            @role('Administrador|Vendedor')
             <th scope="col">Acciones</th>
+            @endrole
         </tr>
     </thead>
     <tbody>
@@ -36,19 +40,25 @@
                     <option value="Recepcionado" {{ $encomienda->Estado == 'Recepcionado' ? 'selected' : '' }}>Recepcionado</option>
                     <option value="Entregado" {{ $encomienda->Estado == 'Entregado' ? 'selected' : '' }}>Entregado</option>
                 </select>
+                @role('Administrador|Vendedor')
                 <button class="btn btn-primary btn-guardar-estado" data-id="{{ $encomienda->id }}">
                     <i class="fas fa-save"></i>
                 </button>
+                @endrole
             </td>
             <td>Bs {{number_format($encomienda->PrecioTotal, 2, ',', '.') }}</td>
+            @role('Administrador|Vendedor')
             <td>
                 <form action="{{route('Encomienda.destroy',$encomienda->id)}}" method="POST">
                     @csrf
                     @method('DELETE')
                     <a href="/Encomienda/{{$encomienda->id}}/edit" class="btn btn-success"><i class="fas fa-edit"></i> EDITAR</a>
+                    @role('Administrador')
                     <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ELIMINAR</button>
+                    @endrole
                 </form>
             </td>
+            @endrole
         </tr>
         @endforeach
     </tbody>

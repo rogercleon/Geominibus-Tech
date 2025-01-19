@@ -3,11 +3,12 @@
 @section('title', 'Sistema de Gestión y Monitoreo "Geominibus Tech"')
 
 @section('content_header')
-<h1>Editar Encomienda</h1>
+<!--<h1>Videojuegos</h1>-->
 @stop
 
 @section('content')
-<form action="{{ route('Encomienda.update', $encomienda->id) }}" method="POST">
+<h2>Editar Encomienda</h2>
+<form action="{{ route('Encomienda.update', $encomienda->id) }}" method="POST"><br>
     @csrf
     @method('PUT')
 
@@ -19,14 +20,17 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <select class="form-control" name="id_emisor" id="input-id_emisor" required>
-                            <option value="" disabled>Seleccione un Emisor</option>
+                            <option value="" disabled>Seleccione un CI</option>
                             @foreach($clientes as $cliente)
                             <option value="{{ $cliente->id }}" {{ $encomienda->id_emisor == $cliente->id ? 'selected' : '' }}>
-                                {{ $cliente->Nombre }} {{ $cliente->Ap_Paterno }}
+                                {{ $cliente->CI }} : {{ $cliente->Nombre }} {{ $cliente->Ap_Paterno }}
                             </option>
                             @endforeach
                         </select>
                     </div>
+                </div>
+                <div class="col-sm-1">
+                    <a href="{{ route('Cliente.create')}}" class="btn btn-info" style="width: 50px; font-weight: bold; font-size: 18px">+</a>
                 </div>
             </div>
         </div>
@@ -38,14 +42,17 @@
                 <div class="col-sm-7">
                     <div class="form-group">
                         <select class="form-control" name="id_receptor" id="input-id_receptor" required>
-                            <option value="" disabled>Seleccione un Receptor</option>
+                            <option value="" disabled>Seleccione un CI</option>
                             @foreach($clientes as $cliente)
                             <option value="{{ $cliente->id }}" {{ $encomienda->id_receptor == $cliente->id ? 'selected' : '' }}>
-                                {{ $cliente->Nombre }} {{ $cliente->Ap_Paterno }}
+                                {{ $cliente->CI }} : {{ $cliente->Nombre }} {{ $cliente->Ap_Paterno }}
                             </option>
                             @endforeach
                         </select>
                     </div>
+                </div>
+                <div class="col-sm-1">
+                    <a href="{{ route('Cliente.create')}}" class="btn btn-info" style="width: 50px; font-weight: bold; font-size: 18px">+</a>
                 </div>
             </div>
         </div>
@@ -90,6 +97,9 @@
                             @endforeach
                         </select>
                     </div>
+                </div>
+                <div class="col-sm-1">
+                    <a href="{{ route('Horario.create')}}" class="btn btn-info" style="width: 50px; font-weight: bold; font-size: 18px">+</a>
                 </div>
             </div>
         </div>

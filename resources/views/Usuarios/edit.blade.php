@@ -3,11 +3,11 @@
 @section('title', 'Sistema de Gestión y Monitoreo "Geominibus Tech"')
 
 @section('content_header')
-<h2>Editar Minibus</h2>
+<h2>Editar Usuario</h2>
 @stop
 
 @section('content')
-<form action="/Usuarios{{ $user->id }}" method="POST"><br>
+<form action="/Usuarios/{{ $user->id }}" method="POST"><br>
     @csrf
     @method('PUT')
     <div class="row">
@@ -34,7 +34,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <!--<div class="row">
         <label class="col-sm-2 col-form-label">{{ __('Contraseña:') }}</label>
         <div class="col-sm-2">
             <div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">
@@ -56,16 +56,16 @@
                 @endif
             </div>
         </div>
-    </div>
+    </div>-->
 
     <div class="row">
         <label class="col-sm-2 col-form-label">{{ __('Rol:') }}</label>
         <div class="col-sm-2">
             <div class="form-group{{ $errors->has('id_rol') ? ' has-danger' : '' }}">
-                <select class="form-control{{ $errors->has('id_rol') ? ' is-invalid' : '' }}" name="id_rol" id="input-id_rol" required>
+                <select class="form-control{{ $errors->has('id_rol') ? ' is-invalid' : '' }}" name="roles[]" id="input-id_rol" required>
                     <option value="" disabled selected>Seleccione un Rol</option>
                     @foreach($roles as $rol)
-                    <option value="{{ $rol->id }}" {{ old('id_rol', $user->id_rol) == $rol->id ? 'selected' : '' }}>
+                    <option value="{{ $rol->name }}" {{ in_array($rol->name, $userRole) ? 'selected' : '' }}>
                         {{ $rol->name }}
                     </option>
                     @endforeach
@@ -76,7 +76,7 @@
             </div>
         </div>
         <div>
-            <a href="{{ route('Roles.create')}}" class="btn btn-info" style="margin-left: 15px">Nuevo Rol</a>
+            <a href="{{ route('Roles.create') }}" class="btn btn-info" style="margin-left: 15px">Nuevo Rol</a>
         </div>
     </div>
 

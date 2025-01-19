@@ -12,7 +12,7 @@
     <table id="minibuses" class="table table-striped" style="width:100%">
         <thead class="bg-primary text-white">
             <tr>
-                <th scope="col">ID</th>
+                <!--<th scope="col">ID</th>-->
                 <th scope="col">Número Minibus</th>
                 <th scope="col">Número Asientos</th>
                 <th scope="col">Número Chasis</th>
@@ -23,7 +23,7 @@
         <tbody>
             @foreach($minibuses as $minibus)
                 <tr>
-                    <td>{{$minibus->id}}</td>
+                    <!--<td>{{$minibus->id}}</td>-->
                     <td>Minibús {{$minibus->Num_Minibus}}</td>
                     <td>{{$minibus->Num_Asientos}}</td>
                     <td>{{$minibus->Num_Chasis}}</td>

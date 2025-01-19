@@ -110,9 +110,10 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Ruta</th>
-                <th scope="col">N° Minibús</th>
                 <th scope="col">Fecha</th>
                 <th scope="col">Hora</th>
+                <th scope="col">N° Minibús</th>
+                <th scope="col">Precio</th>
             </tr>
         </thead>
         <tbody class="bg-primary text-white" style="text-align:center">
@@ -120,9 +121,10 @@
             <tr>
                 <td>{{$horario->id}}</td>
                 <td>{{$horario->ruta->Origen}} - {{$horario->ruta->Destino}}</td>
-                <td>Minibús: {{$horario->asignarMinibus->minibus->Num_Minibus}}</td>
                 <td>{{$horario->Fecha}}</td>
                 <td>{{$horario->Hora}}</td>
+                <td>Minibús: {{$horario->asignarMinibus->minibus->Num_Minibus}}</td>
+                <td>Bs {{number_format($horario->ruta->Precio, 2, ',', '.') }}</td>
             </tr>
             @endforeach
         </tbody>

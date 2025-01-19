@@ -3,11 +3,12 @@
 @section('title', 'Sistema de Gestión y Monitoreo "Geominibus Tech"')
 
 @section('content_header')
-<h1>Comprar Boleto</h1>
+<!--<h1>Videojuegos</h1>-->
 @stop
 
 @section('content')
-<form action="{{ route('Boleto.store') }}" method="POST">
+<h2>Comprar Boleto</h2>
+<form action="{{ route('Boleto.store') }}" method="POST"><br>
     @csrf
     <input type="hidden" name="id_horario" value="{{ $horario->id }}">
 
@@ -20,7 +21,7 @@
                 <div class="col-sm-7">
                     <div class="form-group{{ $errors->has('id_cliente') ? ' has-danger' : '' }}">
                         <select class="form-control{{ $errors->has('id_cliente') ? ' is-invalid' : '' }}" name="id_cliente" id="input-id_cliente" required>
-                            <option value="" disabled selected>Seleccione un Cliente</option>
+                            <option value="" disabled selected>Seleccione un cliente</option>
                             @foreach($clientes as $cliente)
                             <option value="{{ $cliente->id }}" {{ old('id_cliente') == $cliente->id ? 'selected' : '' }}>
                                 {{ $cliente->Nombre }} {{ $cliente->Ap_Paterno }} {{ $cliente->Ap_Materno }}
@@ -32,6 +33,9 @@
                         @endif
                     </div>
                 </div>
+                <!--<div class="col-sm-1">
+                    <a href="{{ route('Cliente.create')}}" class="btn btn-info">+</a>
+                </div>-->
             </div>
 
             <!-- N° Asiento -->
@@ -118,11 +122,15 @@
                     </div>
                 </div>
             </div>
-
+        </div>
+        <div class="col-md-1">
+            <div class="col-sm-1">
+                <a href="{{ route('Cliente.create')}}" class="btn btn-info" style="width: 50px; margin-left: -50px; font-weight: bold; font-size: 18px">+</a>
+            </div>
         </div>
 
         <!-- Columna derecha con el área para seleccionar asiento -->
-        <div class="col-md-3">
+        <div class="col-md-3" style="margin-left: -70px">
             <div class="row">
                 <label class="col-sm-12 col-form-label">{{ __('Seleccionar Asiento:') }}</label>
                 <div class="col-sm-12">
@@ -240,47 +248,46 @@
 </style>
 
 <script>
-function setAsiento(asiento) {
-    // Evitar la selección del asiento 1, ya que está deshabilitado
-    if (asiento === 1) {
-        document.getElementById('input-Asiento').value = '';
-        alert('El asiento 1 no está disponible.');
-        return;
-    }
+    function setAsiento(asiento) {
+        // Evitar la selección del asiento 1, ya que está deshabilitado
+        if (asiento === 1) {
+            alert('El asiento 1 no está disponible.');
+            return;
+        }
 
-    // Actualizar el input con el asiento seleccionado
-    document.getElementById('input-Asiento').value = asiento;
+        // Actualizar el input con el asiento seleccionado
+        document.getElementById('input-Asiento').value = asiento;
 
-    // Total de asientos
-    const totalAsientos = {{ $horario->asignarMinibus->minibus->Num_Asientos }};
+        // Total de asientos
+        const totalAsientos = {{ $horario->asignarMinibus->minibus->Num_Asientos }};
+        const asientosOcupados = @json($asientosOcupados); // Convertir a un array de JavaScript
 
-    // Primero, restablecemos todos los asientos a su color predeterminado
-    for (let i = 1; i <= totalAsientos; i++) {
-        const button = document.getElementById(`seat-${i}`);
-        if (button) {
-            // Restablecer todos los botones a su color original
-            button.classList.remove('btn-success', 'btn-warning', 'btn-danger', 'btn-secondary');
-            
-            // Aseguramos que el asiento 1 sea siempre rojo
-            if (i === 1) {
-                button.classList.add('btn-danger');
-            }
-            // Verificamos si el asiento está ocupado
-            else if ({{ json_encode($asientosOcupados) }}.includes(i)) {
-                button.classList.add('btn-warning');
-            } 
-            else {
-                button.classList.add('btn-secondary');
+        // Primero, restablecemos todos los asientos a su color predeterminado
+        for (let i = 1; i <= totalAsientos; i++) {
+            const button = document.getElementById(`seat-${i}`);
+            if (button) {
+                // Restablecer todos los botones a su color original
+                button.classList.remove('btn-success', 'btn-warning', 'btn-danger', 'btn-secondary');
+
+                // Aseguramos que el asiento 1 sea siempre rojo
+                if (i === 1) {
+                    button.classList.add('btn-danger');
+                }
+                // Verificamos si el asiento está ocupado
+                else if (asientosOcupados.includes(i)) {
+                    button.classList.add('btn-warning');
+                } else {
+                    button.classList.add('btn-secondary');
+                }
             }
         }
-    }
 
-    // Cambiar el color del asiento seleccionado a verde (btn-success)
-    const selectedButton = document.getElementById(`seat-${asiento}`);
-    if (selectedButton) {
-        selectedButton.classList.remove('btn-secondary', 'btn-warning', 'btn-danger');
-        selectedButton.classList.add('btn-success');  // Aquí cambiamos a verde
+        // Cambiar el color del asiento seleccionado a verde (btn-success)
+        const selectedButton = document.getElementById(`seat-${asiento}`);
+        if (selectedButton) {
+            selectedButton.classList.remove('btn-secondary', 'btn-warning', 'btn-danger');
+            selectedButton.classList.add('btn-success'); // Cambiar a verde
+        }
     }
-}
 </script>
 @stop

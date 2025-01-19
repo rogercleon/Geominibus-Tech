@@ -1,17 +1,14 @@
 @extends('adminlte::page')
 
-@section('title', 'Editar Rol')
-
 @section('content_header')
-<h1>Editar Rol</h1>
+<h2>Editar Rol</h2>
 @stop
 
 @section('content')
-<h2>Editar Rol</h2>
 <form action="{{ url('/Roles/' . $role->id) }}" method="POST"><br>
     @csrf
     @method('PUT') <!-- Para indicar que es un método PUT -->
-    
+
     <div class="row">
         <label class="col-sm-2 col-form-label">{{ __('Nombre:') }}</label>
         <div class="col-sm-2">
@@ -24,22 +21,54 @@
         </div>
     </div>
 
+    <!--<div class="row">
+        <label class="col-sm-2 col-form-label">{{ __('Permisos:') }}</label>
+        <div class="col-sm-10">
+            <div class="form-group{{ $errors->has('permission') ? ' has-danger' : '' }}">
+                <div class="row">
+                    @foreach($permission->chunk(ceil($permission->count() / 3)) as $chunk)
+                    <div class="col-md-4">
+                        @foreach($chunk as $permiso)
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="permission[]" id="permission-{{ $permiso->id }}" value="{{ $permiso->id }}" {{ in_array($permiso->id, old('permission', array_keys($rolePermissions))) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="permission-{{ $permiso->id }}">
+                                {{ $permiso->name }}
+                            </label>
+                        </div>
+                        @endforeach
+                    </div>
+                    @endforeach
+                </div>
+                @if ($errors->has('permission'))
+                <span id="permission-error" class="error text-danger" for="input-permission">{{ $errors->first('permission') }}</span>
+                @endif
+            </div>
+        </div>
+    </div>-->
+
     <div class="row">
         <label class="col-sm-2 col-form-label">{{ __('Permisos:') }}</label>
         <div class="col-sm-10">
             <div class="form-group{{ $errors->has('permission') ? ' has-danger' : '' }}">
                 <div class="row">
-                    @foreach($permission->chunk(ceil($permission->count() / 3)) as $chunk) <!-- Divide los permisos en 3 columnas -->
-                        <div class="col-md-4">
-                            @foreach($chunk as $permiso)
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="permission[]" id="permission-{{ $permiso->id }}" value="{{ $permiso->id }}" {{ in_array($permiso->id, old('permission', array_keys($rolePermissions))) ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="permission-{{ $permiso->id }}">
-                                        {{ $permiso->name }}
-                                    </label>
-                                </div>
-                            @endforeach
+                    <!-- Dividir los permisos en columnas para una mejor visualización -->
+                    @foreach($permission->chunk(ceil($permission->count() / 3)) as $chunk)
+                    <div class="col-md-4">
+                        @foreach($chunk as $permiso)
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="permission[]"
+                                id="permission-{{ $permiso->id }}"
+                                value="{{ $permiso->id }}"
+                                {{ in_array($permiso->id, old('permission', array_keys($rolePermissions))) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="permission-{{ $permiso->id }}">
+                                {{ $permiso->name }}
+                            </label>
                         </div>
+                        @endforeach
+                    </div>
                     @endforeach
                 </div>
                 @if ($errors->has('permission'))

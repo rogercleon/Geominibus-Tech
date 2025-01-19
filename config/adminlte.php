@@ -243,12 +243,13 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'Buscar',
         ],
-        ['header' => 'USUARIOS'],
-
+        
+        ['header' => 'USUARIOS','can' => 'Administrador',],
         [
             'text'    => 'Usuarios',
             'icon'    => 'fa fa-user-tie',
             'icon_color' => 'cyan',
+            'can' => 'Administrador',
             'submenu' => [
                 [
                     'text' => 'Usuarios',
@@ -274,6 +275,7 @@ return [
             'icon'        => 'fa fa-user-tie',
             'icon_color' => 'cyan',
             'label_color' => 'success',
+            'can' => 'Administrador',
         ],
         [
             'text'        => 'Minibuses',
@@ -281,6 +283,8 @@ return [
             'icon'        => 'fa fa-bus',
             'icon_color' => 'cyan',
             'label_color' => 'success',
+            'can'         => 'Ver Minibus',
+            'can' => 'Administrador',
         ],
         [
             'text'        => 'Asignar Minibus',
@@ -288,6 +292,7 @@ return [
             'icon'        => 'fa fa-id-card',
             'icon_color' => 'cyan',
             'label_color' => 'success',
+            'can' => 'Administrador',
         ],
         [
             'text'        => 'Rutas',
@@ -295,6 +300,7 @@ return [
             'icon'        => 'fa fa-map',
             'icon_color' => 'cyan',
             'label_color' => 'success',
+            'can' => 'Administrador',
         ],
         [
             'text'        => 'Clientes',
@@ -302,6 +308,7 @@ return [
             'icon'        => 'fa fa-users',
             'icon_color' => 'cyan',
             'label_color' => 'success',
+            'can' => 'Ver cliente',
         ],
         [
             'text'        => 'Horarios',
@@ -338,7 +345,6 @@ return [
             'url'         => '/Mapa2',
             'icon'        => 'fa fa-map-marker',
             'icon_color' => 'cyan',
-            'label'       => 'VER',
             'label_color' => 'success',
         ],
         ['header' => 'CONFIGURACIÓN DE LA CUENTA'],
@@ -354,7 +360,7 @@ return [
             'icon' => 'fas fa-fw fa-lock',
             'icon_color' => 'danger',
         ],
-        [
+        /*[
             'text' => 'Contacto',
             'url'  => '#',
             'icon' => 'fas fa-fw fa-home',
@@ -407,18 +413,21 @@ return [
             'icon'       => 'fa fa-clipboard',
             'icon_color' => 'warning',
             'url'        => '/Conductor/pdf',
+            'can' => 'Ver cliente',
         ],
         [
             'text'       => 'Reporte de Minibuses',
             'icon'       => 'fa fa-clipboard',
             'icon_color' => 'warning',
             'url'        => '/Minibus/pdf',
+            'can' => 'Ver cliente',
         ],
         [
             'text'       => 'Reporte de Asignaciones',
             'icon'       => 'fa fa-clipboard',
             'icon_color' => 'warning',
             'url'        => '/AsignarMinibus/pdf',
+            'can' => 'Ver cliente',
         ],
         [
             'text'       => 'Reporte de Rutas',
@@ -431,6 +440,7 @@ return [
             'icon'       => 'fa fa-clipboard',
             'icon_color' => 'warning',
             'url'        => '/Cliente/pdf',
+            'can' => 'Ver cliente',
         ],
         [
             'text'       => 'Reporte de Horarios',

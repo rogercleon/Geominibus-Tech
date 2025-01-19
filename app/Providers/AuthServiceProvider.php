@@ -25,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::before(function ($user, $hability) {
+        Gate::before(function ($user, $ability) {
             return $user->email == 'admin12345@gmail.com' ?? null;
         });
     }

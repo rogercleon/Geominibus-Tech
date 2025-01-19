@@ -8,7 +8,7 @@
 
 @section('content')
 <h2>Editar Conductor</h2>
-<form action="{{ route('Conductor.update', $conductor->id) }}" method="POST">
+<form action="{{ route('Conductor.update', $conductor->id) }}" method="POST"><br>
     @csrf
     @method('PUT')
 

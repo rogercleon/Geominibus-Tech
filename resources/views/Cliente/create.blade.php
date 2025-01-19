@@ -3,11 +3,11 @@
 @section('title', 'Sistema de Gestión y Monitoreo "Geominibus Tech"')
 
 @section('content_header')
-    <!--<h1>Registrar Cliente</h1>-->
+<!--<h1>Videojuegos</h1>-->
 @stop
 
 @section('content')
-    <h2>Registro de Cliente</h2>
+    <h2>Registro de Clientes</h2>
     <form action="/Cliente" method="POST"><br>
         @csrf
         <div class="row">
@@ -107,7 +107,8 @@
         </div>
 
         <div class="container">
-            <a href="/Cliente" class="btn btn-warning" style="margin-left: 150px" tabindex="5">CANCELAR</a>
+            <a href="{{ url()->previous() }}" class="btn btn-warning" style="margin-left: 150px" tabindex="5">CANCELAR</a>
+            <input type="hidden" name="previous_url" value="{{ url()->previous() }}">
             <button type="submit" class="btn btn-success" style="margin-left: 15px" tabindex="6">GUARDAR</button>
         </div>
     </form>

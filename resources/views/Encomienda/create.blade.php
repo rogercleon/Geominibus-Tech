@@ -3,11 +3,12 @@
 @section('title', 'Sistema de Gestión y Monitoreo "Geominibus Tech"')
 
 @section('content_header')
-<h1>Registrar Encomienda</h1>
+<!--<h1>Registrar Encomienda</h1>-->
 @stop
 
 @section('content')
-<form action="{{ route('Encomienda.store') }}" method="POST">
+<h2>Registro de Encomiendas</h2>
+<form action="{{ route('Encomienda.store') }}" method="POST"><br>
     @csrf
     <div class="row">
         <!-- Emisor -->
@@ -17,10 +18,10 @@
                 <div class="col-sm-6">
                     <div class="form-group{{ $errors->has('id_emisor') ? ' has-danger' : '' }}">
                         <select class="form-control{{ $errors->has('id_emisor') ? ' is-invalid' : '' }}" name="id_emisor" id="input-id_emisor" required>
-                            <option value="" disabled selected>Seleccione un Emisor</option>
+                            <option value="" disabled selected>Seleccione un CI</option>
                             @foreach($clientes as $cliente)
                             <option value="{{ $cliente->id }}" {{ old('id_emisor') == $cliente->id ? 'selected' : '' }}>
-                                {{ $cliente->Nombre }} {{ $cliente->Ap_Paterno }}
+                                {{ $cliente->CI }} : {{ $cliente->Nombre }} {{ $cliente->Ap_Paterno }}
                             </option>
                             @endforeach
                         </select>
@@ -28,6 +29,9 @@
                         <span id="id_emisor-error" class="error text-danger">{{ $errors->first('id_emisor') }}</span>
                         @endif
                     </div>
+                </div>
+                <div class="col-sm-1">
+                    <a href="{{ route('Cliente.create')}}" class="btn btn-info" style="width: 50px; font-weight: bold; font-size: 18px">+</a>
                 </div>
             </div>
         </div>
@@ -39,10 +43,10 @@
                 <div class="col-sm-7">
                     <div class="form-group{{ $errors->has('id_receptor') ? ' has-danger' : '' }}">
                         <select class="form-control{{ $errors->has('id_receptor') ? ' is-invalid' : '' }}" name="id_receptor" id="input-id_receptor" required>
-                            <option value="" disabled selected>Seleccione un Receptor</option>
+                            <option value="" disabled selected>Seleccione un CI</option>
                             @foreach($clientes as $cliente)
                             <option value="{{ $cliente->id }}" {{ old('id_receptor') == $cliente->id ? 'selected' : '' }}>
-                                {{ $cliente->Nombre }} {{ $cliente->Ap_Paterno }}
+                                {{ $cliente->CI }} : {{ $cliente->Nombre }} {{ $cliente->Ap_Paterno }}
                             </option>
                             @endforeach
                         </select>
@@ -50,6 +54,9 @@
                         <span id="id_receptor-error" class="error text-danger">{{ $errors->first('id_receptor') }}</span>
                         @endif
                     </div>
+                </div>
+                <div class="col-sm-1">
+                    <a href="{{ route('Cliente.create')}}" class="btn btn-info" style="width: 50px; font-weight: bold; font-size: 18px">+</a>
                 </div>
             </div>
         </div>
@@ -95,7 +102,7 @@
                             <option value="" disabled selected>Seleccione un Horario</option>
                             @foreach($horarios as $horario)
                             <option value="{{ $horario->id }}" {{ old('id_horario') == $horario->id ? 'selected' : '' }}>
-                                {{ $horario->ruta->Origen }} - {{ $horario->ruta->Origen }} "{{ $horario->Fecha }} : {{ $horario->Hora }}"
+                                {{ $horario->ruta->Origen }} - {{ $horario->ruta->Destino }} "{{ $horario->Fecha }} : {{ $horario->Hora }}"
                             </option>
                             @endforeach
                         </select>
@@ -103,6 +110,9 @@
                         <span id="id_horario-error" class="error text-danger">{{ $errors->first('id_horario') }}</span>
                         @endif
                     </div>
+                </div>
+                <div class="col-sm-1">
+                    <a href="{{ route('Horario.create')}}" class="btn btn-info" style="width: 50px; font-weight: bold; font-size: 18px">+</a>
                 </div>
             </div>
         </div>

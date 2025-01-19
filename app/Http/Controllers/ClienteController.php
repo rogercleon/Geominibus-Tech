@@ -89,7 +89,11 @@ class ClienteController extends Controller
             ]
         );
         Cliente::create($request->only(['CI', 'Nombre', 'Ap_Paterno', 'Ap_Materno', 'Fecha_Nac', 'Direccion', 'Telefono', 'Correo']));
-        return redirect('/Cliente')->with('success', 'Cliente creado con éxito');
+        //return redirect('/Cliente')->with('success', 'Cliente creado con éxito');
+        //return redirect()->back()->with('success', 'Cliente creado con éxito');
+        //return redirect(url()->previous())->with('success', 'Cliente creado con éxito');
+        return redirect($request->input('previous_url', route('Cliente.index')))
+        ->with('success', 'Cliente creado con éxito');
     }
 
     /**

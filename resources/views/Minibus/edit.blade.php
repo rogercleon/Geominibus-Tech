@@ -3,10 +3,11 @@
 @section('title', 'Sistema de Gestión y Monitoreo "Geominibus Tech"')
 
 @section('content_header')
-<h2>Editar Minibus</h2>
+<!--<h1>Videojuegos</h1>-->
 @stop
 
 @section('content')
+<h2>Editar Minibús</h2>
 <form action="/Minibus/{{ $minibus->id }}" method="POST"><br>
     @csrf
     @method('PUT')

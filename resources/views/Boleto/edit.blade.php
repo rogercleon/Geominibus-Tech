@@ -3,11 +3,12 @@
 @section('title', 'Sistema de Gestión y Monitoreo "Geominibus Tech"')
 
 @section('content_header')
-<h1>Editar Boleto</h1>
+<!--<h1>Editar Boleto</h1>-->
 @stop
 
 @section('content')
-<form action="{{ route('Boleto.update', $boleto->id) }}" method="POST">
+<h2>Editar Boleto</h2>
+<form action="{{ route('Boleto.update', $boleto->id) }}" method="POST"><br>
     @csrf
     @method('PUT') <!-- Indica que es una actualización -->
     <input type="hidden" name="id_horario" value="{{ $horario->id }}">
@@ -118,11 +119,15 @@
                     </div>
                 </div>
             </div>
-
+        </div>
+        <div class="col-md-1">
+            <div class="col-sm-1">
+                <a href="{{ route('Cliente.create')}}" class="btn btn-info" style="width: 50px; margin-left: -50px; font-weight: bold; font-size: 18px">+</a>
+            </div>
         </div>
 
         <!-- Columna derecha con el área para seleccionar asiento -->
-        <div class="col-md-3">
+        <div class="col-md-3" style="margin-left: -70px">
             <div class="row">
                 <label class="col-sm-12 col-form-label">{{ __('Seleccionar Asiento:') }}</label>
                 <div class="col-sm-12">

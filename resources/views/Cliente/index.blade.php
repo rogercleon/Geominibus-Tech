@@ -12,7 +12,7 @@
     <table id="clientes" class="table table-striped" style="width:100%">
         <thead class="bg-primary text-white">
             <tr>
-                <th scope="col">ID</th>
+                <!--<th scope="col">ID</th>-->
                 <th scope="col">CI</th>
                 <th scope="col">Nombre Completo</th>
                 <th scope="col">Edad</th>
@@ -25,7 +25,7 @@
         <tbody>
             @foreach($clientes as $cliente)
                 <tr>
-                    <td>{{$cliente->id}}</td>
+                    <!--<td>{{$cliente->id}}</td>-->
                     <td>{{$cliente->CI}}</td>
                     <td>{{$cliente->Nombre}} {{$cliente->Ap_Paterno}} {{$cliente->Ap_Materno}}</td>
                     <td>{{ \Carbon\Carbon::parse($cliente->Fecha_Nac)->age }}</td>
@@ -37,7 +37,9 @@
                             @csrf
                             @method('DELETE')
                             <a href="/Cliente/{{$cliente->id}}/edit" class="btn btn-success"><i class="fas fa-edit"></i> EDITAR</a>
+                            @role('Administrador')
                             <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ELIMINAR</button>
+                            @endrole
                         </form>
                     </td>
                 </tr>

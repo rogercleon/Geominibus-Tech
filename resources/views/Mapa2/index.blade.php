@@ -6,7 +6,8 @@
     $dbname = 'esp32_mysql';
     $dbuser = 'root';
     $dbpass = '';
-    $dbhost = 'localhost';
+    $dbhost = 'localhost:3333';
+    //$dbhost = 'localhost';
 
     $db = @mysqli_connect($dbhost,$dbuser,$dbpass,$dbname);
 
@@ -85,16 +86,16 @@ echo json_encode($rows);*/
 <body>
 
 <div style="background: -webkit-linear-gradient(to right, hsla(219, 39%, 54%, 0.973), hsl(0, 31%, 57%)); background: linear-gradient(to right, hsla(221, 65%, 51%, 0.61), hsla(9, 60%, 60%, 0.815)); background-size: cover; background-attachment: fixed; max-width: 100%;">
-    <br><header>"MONITOREO DE BUSES"</header>
+    <br><header>"Monitoreo de Minibuses"</header>
     <!--<h3>Prueba MapBox - Recepción de Datos de MySQL</h3>-->
     <div id="Contenedor">
         <div class="Geolocalizacion">
             <h2 id="h2">Datos de Geolocalización</h2>
             <div id="Localizacion">
-                <div class="id">
+                <!--<div class="id">
                     <label class="Datos">ID: </label>
                     <input class="Recepcion" readonly="readonly" name="id" id="id" type="number" value="<?php echo $row['ID']; ?>" required="true" aria-required="true" />
-                </div>
+                </div>-->
                 <div>
                     <label class="Datos">Latitud: </label>
                     <input class="Recepcion" readonly="readonly" name="Latitud" id="input-Latitud" type="number" value="<?php echo $row['Latitud']; ?>" required="true" aria-required="true" />
@@ -115,10 +116,10 @@ echo json_encode($rows);*/
                 </div>
             </div>
         </div>
-        <div class="Space"></div>
+        <!--<div class="Space"></div>
         <div class="Bus">
             <h2 id="h2">Cámara de Vigilancia</h2>
-            <div>
+            <div>-->
                 <!--<video class='CamaraReal' width="100%" height="280" controls src="http://www.youtube.com/watch?v=OmxT8a9RWbE">
                     <source src="http://192.168.100.141:81/stream">
                     Your browser does not support the video tag.
@@ -137,14 +138,11 @@ echo json_encode($rows);*/
                     <button id="toggle-stream">Start Stream</button>
                     <button id="face_enroll" class="disabled" disabled="disabled">Enroll Face</button>
                 </section>-->
-                <div class="Vigilancia">
-                    <img class="Camara" src="http://0.tcp.sa.ngrok.io:15352/stream">
-                </div>
                 <!--<a id="Video" href="http://0.tcp.sa.ngrok.io:17128/stream">Presione para ir a la Cámara en tiempo Real</a>-->
                 <!--<img src="http://192.168.100.141:81/stream" width="100%" height="280">-->
 
-            </div>
-        </div>
+        <!--    </div>
+        </div>-->
     </div>
 
     <center>
@@ -164,7 +162,7 @@ echo json_encode($rows);*/
     </center>
     <br>
     <footer>
-        <h2 class="titulo-final">Copyright &copy; "Security-Bus" | Todos los derechos reservados 2022</h2>
+        <h2 class="titulo-final">Copyright &copy; "Geominibus-Tech" | Sindicato Mixto de Transporte (GAMC) todos los derechos reservados 2024</h2>
     </footer>
     <br>
 

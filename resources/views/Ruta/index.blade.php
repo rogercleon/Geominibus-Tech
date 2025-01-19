@@ -12,8 +12,9 @@
     <table id="rutas" class="table table-striped" style="width:100%">
         <thead class="bg-primary text-white">
             <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Origen - Destino</th>
+                <!--<th scope="col">ID</th>-->
+                <th scope="col">Origen</th>
+                <th scope="col">Destino</th>
                 <th scope="col">Precio</th>
                 <th scope="col">Acciones</th>
             </tr>
@@ -21,8 +22,9 @@
         <tbody>
             @foreach($rutas as $ruta)
                 <tr>
-                    <td>{{$ruta->id}}</td>
-                    <td>{{$ruta->Origen}} - {{$ruta->Destino}}</td>
+                    <!--<td>{{$ruta->id}}</td>-->
+                    <td>{{$ruta->Origen}}</td>
+                    <td>{{$ruta->Destino}}</td>
                     <td>Bs {{number_format($ruta->Precio, 2, ',', '.') }}</td>
                     <td>
                         <form action="{{route('Ruta.destroy',$ruta->id)}}" method="POST">

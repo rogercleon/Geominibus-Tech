@@ -48,10 +48,13 @@ class RolController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, ['name' => 'required', 'permission' => 'required']);
-        $role = Role::create(['name' => $request->input('name')]);
-        $role->syncPermissions($request->input('permission'));
+        $role = Role::create(['name' => $request->input('name'), 'guard_name' => 'web']);
+        $permissions = Permission::whereIn('id', $request->input('permission'))->pluck('name')->toArray();
+        $role->syncPermissions($permissions);
+        //$role->syncPermissions($request->input('permission'));
 
-        return redirect('/Roles')->with('success', 'Rol creado con éxito');
+        //return redirect('/Roles')->with('success', 'Rol creado con éxito');
+        return redirect()->route('Roles.index')->with('success', 'Rol creado con éxito');
     }
 
     /**
@@ -94,9 +97,12 @@ class RolController extends Controller
         $role = Role::find($id);
         $role->name = $request->input('name');
         $role->save();
-        $role->syncPermissions($request->input('permission'));
+        $permissions = Permission::whereIn('id', $request->input('permission'))->pluck('name')->toArray();
+        $role->syncPermissions($permissions);
 
-        return view('Roles.index')->with('success', 'Rol actualizado correctamente');
+        //$role->syncPermissions($request->input('permission'));
+
+        return redirect()->route('Roles.index')->with('success', 'Rol actualizado correctamente');
     }
 
     /**

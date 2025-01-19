@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-<h2>Editar Asignación de Minibuses</h2>
+<h2>Editar Asignación de Minibús</h2>
 <form action="{{ route('AsignarMinibus.update', $asignarminibus->id) }}" method="POST"><br>
     @csrf
     @method('PUT')

@@ -55,7 +55,7 @@
     </div>
 
     <div class="container">
-        <a href="/AsignarMinibus" class="btn btn-warning" style="margin-left: 150px" tabindex="5">CANCELAR</a>
+        <a href="{{ url()->previous() }}" class="btn btn-warning" style="margin-left: 150px" tabindex="5">CANCELAR</a>
         <button type="submit" class="btn btn-success" style="margin-left: 15px" tabindex="6">GUARDAR</button>
     </div>
 </form>

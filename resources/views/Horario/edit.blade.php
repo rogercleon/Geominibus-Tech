@@ -3,6 +3,7 @@
 @section('title', 'Sistema de Gestión y Monitoreo "Geominibus Tech"')
 
 @section('content_header')
+<!--<h1>Videojuegos</h1>-->
 @stop
 
 @section('content')
@@ -29,9 +30,11 @@
                 @endif
             </div>
         </div>
+        @role('Administrador')
         <div>
             <a href="{{ route('Ruta.create')}}" class="btn btn-info" style="margin-left: 15px">Nueva Ruta</a>
         </div>
+        @endrole
     </div>
 
     <!-- Campo para seleccionar la Asignación de Minibús -->
@@ -52,9 +55,11 @@
                 @endif
             </div>
         </div>
+        @role('Administrador')
         <div>
             <a href="{{ route('AsignarMinibus.create')}}" class="btn btn-info" style="margin-left: 15px">Nuevo Minibús</a>
         </div>
+        @endrole
     </div>
 
     <!-- Campo para la Fecha -->

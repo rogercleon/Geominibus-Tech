@@ -84,7 +84,9 @@ class HorarioController extends Controller
         );
 
         Horario::create($request->only(['id_ruta', 'id_minibus', 'Fecha', 'Hora']));
-        return redirect('/Horario')->with('success', 'Horario creado con éxito');
+        //return redirect('/Horario')->with('success', 'Horario creado con éxito');
+        return redirect($request->input('previous_url', route('Horario.index')))
+        ->with('success', 'Horario creado con éxito');
     }
 
     /**
@@ -127,7 +129,7 @@ class HorarioController extends Controller
             [
                 'id_ruta' => 'required|exists:rutas,id',
                 'id_minibus' => 'required|exists:asignar_minibuses,id',
-                'Fecha' => 'required|date|after_or_equal:today',
+                //'Fecha' => 'required|date|after_or_equal:today',
                 'Hora' => [
                     'required',
                     'date_format:H:i',
@@ -138,9 +140,9 @@ class HorarioController extends Controller
                 'id_ruta.exists' => 'La ruta seleccionada no existe.',
                 'id_minibus.required' => 'La asignación de minibús es obligatoria.',
                 'id_minibus.exists' => 'La asignación de minibús seleccionada no existe.',
-                'Fecha.required' => 'La fecha es obligatoria.',
-                'Fecha.date' => 'La fecha debe ser válida.',
-                'Fecha.after_or_equal' => 'La fecha debe ser hoy o posterior.',
+                //'Fecha.required' => 'La fecha es obligatoria.',
+                //'Fecha.date' => 'La fecha debe ser válida.',
+                //'Fecha.after_or_equal' => 'La fecha debe ser hoy o posterior.',
                 'Hora.required' => 'La hora es obligatoria.',
                 'Hora.date_format' => 'La hora debe estar en el formato HH:mm.',
             ]

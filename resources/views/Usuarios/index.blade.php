@@ -24,9 +24,10 @@
                     <td>{{$user->id}}</td>
                     <td>{{$user->name}}</td>
                     <td>{{$user->email}}</td>
-                    <td>@if(!empty($user->getRoleNames()))
-                            @foreach($user->getRoleNames() as $rol)
-                                {{$rolname}}
+                    <td>
+                        @if(!empty($user->getRoleNames()))
+                            @foreach($user->getRoleNames() as $rolName)
+                                {{$rolName}}
                             @endforeach
                         @endif
                     </td>
@@ -35,7 +36,9 @@
                             @csrf
                             @method('DELETE')
                             <a href="/Usuarios/{{$user->id}}/edit" class="btn btn-success"><i class="fas fa-edit"></i> EDITAR</a>
+
                             <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> ELIMINAR</button>
+
                         </form>
                     </td>
                 </tr>

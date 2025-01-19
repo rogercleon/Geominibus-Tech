@@ -3,7 +3,7 @@
 @section('title', 'Sistema de Gestión y Monitoreo "Geominibus Tech"')
 
 @section('content_header')
-<!--<h1>Rutas</h1>-->
+<!--<h1>Videojuegos</h1>-->
 @stop
 
 @section('content')
@@ -57,7 +57,7 @@
     </div>
 
     <div class="container">
-        <a href="/Ruta" class="btn btn-warning" style="margin-left: 150px" tabindex="5">CANCELAR</a>
+        <a href="{{ url()->previous() }}" class="btn btn-warning" style="margin-left: 150px" tabindex="5">CANCELAR</a>
         <button type="submit" class="btn btn-success" style="margin-left: 15px" tabindex="6">GUARDAR</button>
     </div>
 </form>

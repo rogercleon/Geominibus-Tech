@@ -31,7 +31,8 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        $roles = Role::pluck('name', 'name')->all();
+        $roles = Role::all();
+        //$roles = Role::pluck('name', 'name')->all();
         return View('Usuarios.create', compact('roles'));
     }
 
@@ -53,10 +54,19 @@ class UsuarioController extends Controller
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
 
-        $user =User::create($input);
+        $user = User::create([
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'password' => $input['password']
+        ]);
+
         $user->assignRole($request->input('roles'));
 
-        return View('Usuarios.index');
+        //$user =User::create($input);
+        //$user->assignRole($request->input('roles'));
+        return redirect()->route('Usuarios.index')->with('success', 'Usuario creado correctamente');
+
+        //return View('Usuarios.index');
     }
 
     /**
@@ -79,8 +89,10 @@ class UsuarioController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        $roles = Role::pluck('name', 'name')->all();
-        $userRole = $user->roles->pluck('name','name')->all();
+        $roles = Role::all();
+        //$roles = Role::pluck('name', 'name')->all();
+        $userRole = $user->roles->pluck('name')->all();
+        //$userRole = $user->roles->pluck('name','name')->all();
 
         return View('Usuarios.edit', compact('user','roles','userRole'));
     }
@@ -96,7 +108,7 @@ class UsuarioController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'same:confirm-password',
             'roles' => 'required',
         ]);
@@ -110,10 +122,10 @@ class UsuarioController extends Controller
 
         $user = User::find($id);
         $user->update($input);
-        DB::table('model_has_roles')->where('model_id', $id)->delete();
-        $user->syncRole($request->input('roles'));
+        //DB::table('model_has_roles')->where('model_id', $id)->delete();
+        $user->syncRoles($request->input('roles'));
 
-        return View('Usuarios.index');
+        return redirect()->route('Usuarios.index')->with('success', 'Usuario actualizado correctamente');
 
     }
 

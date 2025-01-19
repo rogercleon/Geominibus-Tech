@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Models\Role;
 
 use Spatie\Permission\Traits\HasRoles;
 
@@ -69,8 +70,17 @@ class User extends Authenticatable
     {
         return 'user/profile';
     }
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
     public function adminlte_desc()
     {
-        return "Administrador";
+        if ($this->role) {
+            return $this->role->name; // Retorna el nombre del rol si existe
+        }
+    
+        // Si no tiene un rol, retorna "Usuario" por defecto
+        return 'Usuario';
     }
 }

@@ -34,11 +34,11 @@
         </div>
     </div>
 
-    <div class="row">
+    <!--<div class="row">
         <label class="col-sm-2 col-form-label">{{ __('Contraseña:') }}</label>
         <div class="col-sm-2">
             <div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">
-                <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" id="input-password" type="text" placeholder="{{ __('Contraseña') }}" value="{{ old('password')}}" required="true" aria-required="true" />
+                <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" id="input-password" type="password" placeholder="{{ __('Contraseña') }}" value="{{ old('password')}}" required="true" aria-required="true" />
                 @if ($errors->has('password'))
                 <span id="password-error" class="error text-danger" for="input-password">{{ $errors->first('password')}}</span>
                 @endif
@@ -49,10 +49,45 @@
     <div class="row">
         <label class="col-sm-2 col-form-label">{{ __('Confirmar contraseña:') }}</label>
         <div class="col-sm-2">
-            <div class="form-group{{ $errors->has('confirm_password') ? ' has-danger' : '' }}">
-                <input class="form-control{{ $errors->has('confirm_password') ? ' is-invalid' : '' }}" name="confirm_password" id="input-confirm_password" type="text" placeholder="{{ __('Confirmar contraseña') }}" value="{{ old('confirm_password')}}" required="true" aria-required="true" />
-                @if ($errors->has('confirm_password'))
-                <span id="confirm_password-error" class="error text-danger" for="input-confirm_password">{{ $errors->first('confirm_password')}}</span>
+            <div class="form-group{{ $errors->has('confirm-password') ? ' has-danger' : '' }}">
+                <input class="form-control{{ $errors->has('confirm-password') ? ' is-invalid' : '' }}" name="confirm-password" id="input-confirm-password" type="password" placeholder="{{ __('Confirmar contraseña') }}" value="{{ old('confirm-password')}}" required="true" aria-required="true" />
+                @if ($errors->has('confirm-password'))
+                <span id="confirm-password-error" class="error text-danger" for="input-confirm-password">{{ $errors->first('confirm-password')}}</span>
+                @endif
+            </div>
+        </div>
+    </div>-->
+    <div class="row">
+        <label class="col-sm-2 col-form-label">{{ __('Contraseña:') }}</label>
+        <div class="col-sm-2">
+            <div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">
+                <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}"
+                    name="password"
+                    id="input-password"
+                    type="password"
+                    placeholder="{{ __('Contraseña') }}"
+                    required="true"
+                    aria-required="true" />
+                @if ($errors->has('password'))
+                <span id="password-error" class="error text-danger" for="input-password">{{ $errors->first('password')}}</span>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <label class="col-sm-2 col-form-label">{{ __('Confirmar contraseña:') }}</label>
+        <div class="col-sm-2">
+            <div class="form-group{{ $errors->has('confirm-password') ? ' has-danger' : '' }}">
+                <input class="form-control{{ $errors->has('confirm-password') ? ' is-invalid' : '' }}"
+                    name="confirm-password"
+                    id="input-confirm-password"
+                    type="password"
+                    placeholder="{{ __('Confirmar contraseña') }}"
+                    required="true"
+                    aria-required="true" />
+                @if ($errors->has('confirm-password'))
+                <span id="confirm-password-error" class="error text-danger" for="input-confirm-password">{{ $errors->first('confirm-password')}}</span>
                 @endif
             </div>
         </div>
@@ -65,9 +100,9 @@
                 <select class="form-control{{ $errors->has('id_rol') ? ' is-invalid' : '' }}" name="id_rol" id="input-id_rol" required>
                     <option value="" disabled selected>Seleccione un Rol</option>
                     @foreach($roles as $rol)
-                        <option value="{{ $rol->id }}" {{ old('id_rol') == $rol->id ? 'selected' : '' }}>
-                            {{ $rol->name }} 
-                        </option>
+                    <option value="{{ $rol->id }}" {{ old('id_rol') == $rol->id ? 'selected' : '' }}>
+                        {{ $rol->name }}
+                    </option>
                     @endforeach
                 </select>
                 @if ($errors->has('id_rol'))

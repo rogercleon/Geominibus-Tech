@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Reporte de Minibuses</title>
+    <title>Reporte de Boletos</title>
     <link rel="stylesheet" href="{{ public_path('css/app.css') }}" type="text/css">
     <style>
         body {
@@ -18,6 +18,7 @@
             margin: 0;
             font-size: 18px;
         }
+
         h2 {
             text-align: center;
             margin: 0;
@@ -28,6 +29,7 @@
             margin-top: 35px;
             font-size: 24px;
         }
+
         .header {
             margin-top: 40px;
             display: flex;
@@ -35,7 +37,8 @@
             justify-content: center;
             text-align: center;
         }
-        .header .info{
+
+        .header .info {
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -99,30 +102,36 @@
             <p><b>Cochabamba - Bolivia</b></p>
         </div>
     </div>
-    
+
     <p style="text-align: right; margin-right: 25px;"><b>Fecha:</b> {{ now()->format('d/m/Y') }}</p>
 
-    <h1><b>REPORTE DE MINIBUSES</b></h1>
+    <h1><b>REPORTE DE BOLETOS</b></h1>
     <p style="text-align: center; font-size: 14px; font-weight: bold;"><b>_______________________________________________________________________________________</b></p>
 
-    <table align="center" cellspacing="5" cellpadding="5" border="3" id="buses" class="table table-striped" style="width:90%">
-        <thead class="bg-primary text-white" bgcolor="#358391" style="text-emphasis-color: #FFFFFF;">
+    <table align="center" cellspacing="5" cellpadding="5" border="3" id="boletos" class="table table-striped" style="width:90%">
+        <thead class="bg-primary text-white" bgcolor="#358391">
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Num Minibús</th>
-                <th scope="col">Num Asientos</th>
-                <th scope="col">Num Chasis</th>
-                <th scope="col">Placa</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Ruta</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+                <th scope="col">N° Minibús</th>
+                <th scope="col">Asiento</th>
+                <th scope="col">Precio</th>
             </tr>
         </thead>
-        <tbody class="bg-primary text-white" style="text-align:center">
-            @foreach($minibuses as $minibus)
+        <tbody>
+            @foreach($boletos as $boleto)
             <tr>
-                <td>{{$minibus->id}}</td>
-                <td>{{$minibus->Num_Minibus}}</td>
-                <td>{{$minibus->Num_Asientos}}</td>
-                <td>{{$minibus->Num_Chasis}}</td>
-                <td>{{$minibus->Placa}}</td>
+                <td>{{ $boleto->id }}</td>
+                <td>{{ $boleto->cliente->Nombre }} {{ $boleto->cliente->Ap_Paterno }} {{ $boleto->cliente->Ap_Materno }}</td>
+                <td>{{ $boleto->horario->ruta->Origen }} - {{ $boleto->horario->ruta->Destino }}</td>                
+                <td>{{ $boleto->horario->Fecha }}</td>
+                <td>{{ $boleto->horario->Hora }}</td>
+                <td>Minibús {{ $boleto->horario->asignarMinibus->minibus->Num_Minibus }}</td>
+                <td>Asiento {{ $boleto->Asiento }}</td>
+                <td>Bs {{ number_format($boleto->Precio, 2, ',', '.') }}</td>
             </tr>
             @endforeach
         </tbody>
@@ -135,7 +144,6 @@
     <div class="page-number">
         Página: {PAGE_NUM} de {PAGE_COUNT}
     </div>
-
 </body>
 
 </html>

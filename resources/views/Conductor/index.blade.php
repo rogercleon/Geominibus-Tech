@@ -16,7 +16,7 @@ use Carbon\Carbon;
     <table id="conductores" class="table table-striped" style="width:100%">
         <thead class="bg-primary text-white">
             <tr>
-                <th scope="col">ID</th>
+                <!--<th scope="col">ID</th>-->
                 <th scope="col">Licencia</th>
                 <th scope="col">Nombre Completo</th>
                 <th scope="col">Edad</th>
@@ -28,7 +28,7 @@ use Carbon\Carbon;
         <tbody>
             @foreach($conductores as $conductor)
                 <tr>
-                    <td>{{$conductor->id}}</td>
+                    <!--<td>{{$conductor->id}}</td>-->
                     <td>{{$conductor->Licencia}}</td>
                     <td>{{$conductor->Nombre}} {{$conductor->Ap_Paterno}} {{$conductor->Ap_Materno}}</td>
                     <td>{{ \Carbon\Carbon::parse($conductor->Fecha_Nac)->age }}</td>

@@ -3,7 +3,7 @@
 @section('title', 'Sistema de Gestión y Monitoreo "Geominibus Tech"')
 
 @section('content_header')
-<!--<h1>Editar Ruta</h1>-->
+<!--<h1>Videojuegos</h1>-->
 @stop
 
 @section('content')
