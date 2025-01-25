@@ -18,6 +18,7 @@
             margin: 0;
             font-size: 18px;
         }
+
         h2 {
             text-align: center;
             margin: 0;
@@ -28,6 +29,7 @@
             margin-top: 35px;
             font-size: 24px;
         }
+
         .header {
             margin-top: 40px;
             display: flex;
@@ -35,7 +37,8 @@
             justify-content: center;
             text-align: center;
         }
-        .header .info{
+
+        .header .info {
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -99,43 +102,44 @@
             <p><b>Cochabamba - Bolivia</b></p>
         </div>
     </div>
-    
+
     <p style="text-align: right; margin-right: 25px;"><b>Fecha:</b> {{ now()->format('d/m/Y') }}</p>
 
-    <h1><b>REPORTE DE HORARIOS</b></h1>
-    <p style="text-align: center; font-size: 14px; font-weight: bold;"><b>_______________________________________________________________________________________</b></p>
+    <h1><b>REPORTE DE ENCOMIENDAS</b></h1>
+    <p style="text-align: center;">_______________________________________________________________________________________</p><br>
+    <p style="text-align: left; margin-left: 245px;">RUTA: <b>{{ $ruta->Origen }} - {{ $ruta->Destino }}</b></p>
+    <p style="text-align: left; margin-left: 245px;">FECHA: <b>{{ \Carbon\Carbon::parse($fecha)->format('d/m/Y') }}</b></p>
+    <p style="text-align: center;">_______________________________________________________________________________________</p>
 
-    <table align="center" cellspacing="5" cellpadding="5" border="3" id="horarios" class="table table-striped" style="width:90%">
-        <thead class="bg-primary text-white" bgcolor="#358391" style="text-emphasis-color: #FFFFFF;">
+    @if($encomiendas->isNotEmpty())
+    <table align="center" class="table table-striped">
+        <thead>
             <tr>
-                <th scope="col">Ruta</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Hora</th>
-                <th scope="col">N° Minibús</th>
-                <th scope="col">Precio</th>
+                <th>Emisor</th>
+                <th>Receptor</th>
+                <th>Fecha de Envío</th>
+                <th>Estado</th>
+                <th>Precio Total</th>
             </tr>
         </thead>
-        <tbody class="bg-primary text-white" style="text-align:center">
-            @foreach($horarios as $horario)
+        <tbody>
+            @foreach($encomiendas as $encomienda)
             <tr>
-                <td>{{$horario->ruta->Origen}} - {{$horario->ruta->Destino}}</td>
-                <td>{{$horario->Fecha}}</td>
-                <td>{{$horario->Hora}}</td>
-                <td>Minibús: {{$horario->asignarMinibus->minibus->Num_Minibus}}</td>
-                <td>Bs {{number_format($horario->ruta->Precio, 2, ',', '.') }}</td>
+                <td>{{ $encomienda->emisor->Nombre }} {{ $encomienda->emisor->Ap_Paterno }} {{ $encomienda->emisor->Ap_Materno }}</td>
+                <td>{{ $encomienda->receptor->Nombre }} {{ $encomienda->receptor->Ap_Paterno }} {{ $encomienda->receptor->Ap_Materno }}</td>
+                <td>{{ \Carbon\Carbon::parse($encomienda->Fecha_Env)->format('d/m/Y') }}</td>
+                <td>{{ $encomienda->Estado }}</td>
+                <td>{{ number_format($encomienda->PrecioTotal, 2) }} Bs.</td>
             </tr>
             @endforeach
         </tbody>
     </table>
+    @else
+    <br><p style="text-align: center; font-size: 14px;"><strong>No se encontraron encomiendas para los filtros seleccionados.</strong></p>
+    @endif
 
     <div class="footer">
         <p>Reporte generado por Sistema de Gestión y Monitoreo "Geominibus Tech"</p>
     </div>
-
-    <div class="page-number">
-        Página: {PAGE_NUM} de {PAGE_COUNT}
-    </div>
-
 </body>
-
 </html>

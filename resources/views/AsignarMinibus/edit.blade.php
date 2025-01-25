@@ -42,7 +42,7 @@
                     <option value="" disabled>Seleccione un minibús</option>
                     @foreach($minibuses as $minibus)
                         <option value="{{ $minibus->id }}" {{ $asignarminibus->id_minibus == $minibus->id ? 'selected' : '' }}>
-                            {{ $minibus->Num_Minibus }}
+                            Minibús {{ $minibus->Num_Minibus }}
                         </option>
                     @endforeach
                 </select>

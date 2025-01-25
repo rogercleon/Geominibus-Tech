@@ -20,4 +20,9 @@ class Minibuse extends Model
     {
         return $this->hasMany(AsignarMinibuse::class, 'id_minibus');
     }
+
+    public function monitoreos()
+    {
+        return $this->hasMany(Monitoreo::class, 'id_minibus');
+    }
 }

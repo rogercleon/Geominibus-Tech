@@ -13,9 +13,7 @@ class DetalleEncomienda extends Model
         'id_encomienda',
         'Descripcion',
         'Cantidad',
-        'Largo',
-        'Ancho',
-        'Alto',
+        'Peso',
         'Precio',
     ];
 

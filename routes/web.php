@@ -64,13 +64,24 @@ Route::get('/Cliente/pdf', [App\Http\Controllers\ClienteController::class, 'pdf'
 Route::get('/Boleto/pdf', [App\Http\Controllers\BoletoController::class, 'pdf'])->name('Boleto.pdf');
 Route::get('/Encomienda/pdf', [App\Http\Controllers\EncomiendaController::class, 'pdf'])->name('Encomienda.pdf');
 
+// RUTAS GET DE OBTENER PDF SEGUN EL MINIBUS
 //Route::get('/Boleto/pdfMinibus/{minibusId}', [App\Http\Controllers\BoletoController::class, 'pdfMinibus'])->name('Boleto.pdfMinibus');
 Route::get('/pdfMinibus/{horarioId}', [App\Http\Controllers\BoletoController::class, 'pdfMinibus'])->name('Boleto.pdfMinibus');
 
 
-
+// RUTAS GET DE ENCOMIENDA Y BOLETOS
 Route::get('/Boleto/{id_horario}', [App\Http\Controllers\BoletoController::class, 'create'])->name('Boleto.create');
 Route::put('/Encomienda/{id}/estado', [App\Http\Controllers\EncomiendaController::class, 'ActualizarEstado']);
+
+Route::post('/boletos/{id}/qr', [App\Http\Controllers\BoletoController::class, 'generateQrCode'])->name('boleto.qr');
+
+
+
+// RUTAS GET DEL MAPBOX
+Route::get('/mapbox', [App\Http\Controllers\MapBoxController::class, 'index']);
+Route::get('/mapbox/coordinates/{id}', [App\Http\Controllers\MapBoxController::class, 'getCoordinates']);
+
+Route::get('/datos-minibus/{id}', [App\Http\Controllers\MapBoxController::class, 'obtenerDatosMinibus']);
 
 
 
@@ -95,10 +106,26 @@ Route::resource('Horario', 'App\Http\Controllers\HorarioController');
 Route::resource('Cliente', 'App\Http\Controllers\ClienteController');
 Route::resource('Boleto', 'App\Http\Controllers\BoletoController');
 Route::resource('Encomienda', 'App\Http\Controllers\EncomiendaController');
+Route::resource('Reportes', 'App\Http\Controllers\ReporteController');
+
+
+// APIS DE REPORTES
+Route::get('/Reportes/filtrar', [App\Http\Controllers\ReporteController::class, 'mostrarFiltro'])->name('reportes.filtrar');
+Route::post('/Reportes/generar', [App\Http\Controllers\ReporteController::class, 'generarReporte'])->name('reportes.generar');
+
+Route::post('/Reportes/generarMinibus', [App\Http\Controllers\ReporteController::class, 'generarReporteMinibus'])->name('reportes.generarMinibus');
+Route::post('/Reportes/generarHorarios', [App\Http\Controllers\ReporteController::class, 'generarReporteHorarios'])->name('reportes.generarHorarios');
+Route::post('/Reportes/generarBoletos', [App\Http\Controllers\ReporteController::class, 'generarReporteBoletos'])->name('reportes.generarBoletos');
+Route::post('/Reportes/generarEncomiendas', [App\Http\Controllers\ReporteController::class, 'generarReporteEncomiendas'])->name('reportes.generarEncomiendas');
+
+
+
 
 Route::resource('dash', 'App\Http\Controllers\DashboardController');
 Route::get('dash', [App\Http\Controllers\DashboardController::class, 'index']);
 
+
+// RUTAS CONTEO DE MODELOS
 Route::get('api/conductores/count', function () {
     return response()->json(['conductores' => Conductore::count()]);
 });

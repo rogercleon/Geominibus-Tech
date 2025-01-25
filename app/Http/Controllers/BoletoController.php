@@ -7,6 +7,7 @@ use App\Models\Cliente;
 use App\Models\Horario;
 use Illuminate\Http\Request;
 use PDF;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BoletoController extends Controller
 {
@@ -117,6 +118,26 @@ class BoletoController extends Controller
 
         return redirect()->route('Boleto.index')->with('success', 'Boleto comprado con éxito');
     }
+           
+    public function generateQrCode(Request $request)
+    {
+        // Lógica para generar el QR, por ejemplo usando una librería como 'endroid/qr-code'
+        // Aquí obtienes los datos que se pasan desde el formulario
+        $cliente = $request->input('Cliente');
+        $asiento = $request->input('Asiento');
+        $precio = $request->input('Precio');
+        $fecha = $request->input('Fecha');
+        $hora = $request->input('Hora');
+        $ruta = $request->input('Ruta');
+        $numMinibus = $request->input('Num_Minibus');
+
+        // Genera el QR Code (puedes usar una librería para esto, por ejemplo 'endroid/qr-code')
+        $qrCode = QrCode::size(250)->generate($cliente . ' ' . $asiento . ' ' . $precio . ' ' . $fecha . ' ' . $hora . ' ' . $ruta . ' ' . $numMinibus);
+
+        return response()->json(['qrCode' => $qrCode]);
+    }
+
+
 
     /**
      * Display the specified resource.

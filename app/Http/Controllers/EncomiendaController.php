@@ -73,9 +73,7 @@ class EncomiendaController extends Controller
                 'detalles' => 'required|array',
                 'detalles.*.Descripcion' => 'required|string',
                 'detalles.*.Cantidad' => 'required|numeric|gt:0',
-                'detalles.*.Largo' => 'required|numeric|gt:0',
-                'detalles.*.Ancho' => 'required|numeric|gt:0',
-                'detalles.*.Alto' => 'required|numeric|gt:0',
+                'detalles.*.Peso' => 'required|numeric|gt:0',
                 'detalles.*.Precio' => 'required|numeric|gt:0',
             ],
             [
@@ -101,15 +99,9 @@ class EncomiendaController extends Controller
                 'detalles.*.Cantidad.required' => 'El campo "Cantidad" es obligatorio en cada detalle.',
                 'detalles.*.Cantidad.numeric' => 'El campo "Cantidad" debe ser un número.',
                 'detalles.*.Cantidad.gt' => 'La "Cantidad" debe ser mayor a 0.',
-                'detalles.*.Largo.required' => 'El campo "Largo" es obligatorio en cada detalle.',
-                'detalles.*.Largo.numeric' => 'El campo "Largo" debe ser un número.',
-                'detalles.*.Largo.gt' => 'El "Largo" debe ser mayor a 0.',
-                'detalles.*.Ancho.required' => 'El campo "Ancho" es obligatorio en cada detalle.',
-                'detalles.*.Ancho.numeric' => 'El campo "Ancho" debe ser un número.',
-                'detalles.*.Ancho.gt' => 'El "Ancho" debe ser mayor a 0.',
-                'detalles.*.Alto.required' => 'El campo "Alto" es obligatorio en cada detalle.',
-                'detalles.*.Alto.numeric' => 'El campo "Alto" debe ser un número.',
-                'detalles.*.Alto.gt' => 'El "Alto" debe ser mayor a 0.',
+                'detalles.*.Peso.required' => 'El campo "Peso" es obligatorio en cada detalle.',
+                'detalles.*.Peso.numeric' => 'El campo "Peso" debe ser un número.',
+                'detalles.*.Peso.gt' => 'El "Peso" debe ser mayor a 0.',
                 'detalles.*.Precio.required' => 'El campo "Precio" es obligatorio en cada detalle.',
                 'detalles.*.Precio.numeric' => 'El campo "Precio" debe ser un número.',
                 'detalles.*.Precio.gt' => 'El "Precio" debe ser mayor a 0.',
@@ -133,9 +125,7 @@ class EncomiendaController extends Controller
                 'id_encomienda' => $encomienda->id,
                 'Descripcion' => $detalle['Descripcion'],
                 'Cantidad' => $detalle['Cantidad'],
-                'Largo' => $detalle['Largo'],
-                'Ancho' => $detalle['Ancho'],
-                'Alto' => $detalle['Alto'],
+                'Peso' => $detalle['Peso'],
                 'Precio' => $detalle['Precio'],
             ]);
         }
@@ -205,9 +195,7 @@ class EncomiendaController extends Controller
             'detalles' => 'required|array',
             'detalles.*.Descripcion' => 'required|string',
             'detalles.*.Cantidad' => 'required|numeric|gt:0',
-            'detalles.*.Largo' => 'required|numeric|gt:0',
-            'detalles.*.Ancho' => 'required|numeric|gt:0',
-            'detalles.*.Alto' => 'required|numeric|gt:0',
+            'detalles.*.Peso' => 'required|numeric|gt:0',
             'detalles.*.Precio' => 'required|numeric|gt:0',
         ]);
 
@@ -239,6 +227,8 @@ class EncomiendaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $encomienda = Encomienda::find($id);
+        $encomienda->delete();
+        return redirect('/Encomienda');
     }
 }

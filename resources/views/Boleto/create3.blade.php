@@ -175,32 +175,29 @@
     </div>
 
     <div class="row">
-        <a href="/Horario" class="btn btn-warning" style="margin-left: 250px; width: 105px;" tabindex="5">CANCELAR</a>
+        <a href="/Horario" class="btn btn-warning" style="margin-left: 250px; width: 110px;" tabindex="5">CANCELAR</a>
         <button type="submit" class="btn btn-success" style="margin-left: 15px; width: 100px;" tabindex="6">COMPRAR</button>
     </div>
 
 </form>
-<br>
 
 <div class="row">
-    <button id="generateQR" class="btn btn-primary" style="margin-left: 29%; width: 110px;">PAGAR QR</button>
+    <button id="generateQR" class="btn btn-primary" style="margin-left: 15px; width: 100px;">Pagar QR</button>
     <!-- Modal -->
     <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header" style="background-color: #95d8f5">
-                    <h3 class="modal-title" id="qrModalLabel" style="margin-left: 93px;"><strong>Código QR para el Pago</strong></h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" 
-                    style=" width: 40px; height:40px; background-color: #e65a51; font-size: 20px;"><strong>x</strong></button>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="qrModalLabel">Código QR para el Pago</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-center" style="background-color: #6a6a6a; color:white">
-                    <h6><strong>Escanea este código QR para realizar el pago</strong></h6>
+                <div class="modal-body text-center">
+                    <h4>Escanea este código QR para realizar el pago</h4>
                     <!-- Contenedor para el código QR -->
-                    <canvas id="qrcodeCanvas" style="margin-top: 2px; border-radius: 13px;"></canvas>
+                    <canvas id="qrcodeCanvas" style="margin-top: 15px;"></canvas>
                 </div>
-                <div class="modal-footer" style="background-color: #f4acac">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                    style="background: #3186c9">CERRAR</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -213,15 +210,13 @@
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 <!-- Bootstrap CSS and JS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
     form * {
-        all: reset;
     }
     form {
-        all: unset;
-        all: revert;
     }
     #input-Asiento {
         font-weight: bold;

@@ -21,8 +21,8 @@ class CreateMonitoreosTable extends Migration
                 ->on('minibuses')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
-            $table->decimal('Latitud', 10, 8);
-            $table->decimal('Longitud', 11, 8);
+            $table->decimal('Latitud', 10, 6);
+            $table->decimal('Longitud', 10, 6);
             $table->timestamps();
         });
     }

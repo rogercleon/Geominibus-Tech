@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return View('profile.show1');
+        //return View('profile.show1');
     }
 
     // Registro

@@ -4,8 +4,6 @@
 
 @section('content_header')
 <!--<h1>Videojuegos</h1>-->
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
-
 @stop
 
 @section('content')
@@ -25,7 +23,7 @@
                         <select class="form-control{{ $errors->has('id_cliente') ? ' is-invalid' : '' }}" name="id_cliente" id="input-id_cliente" required>
                             <option value="" disabled selected>Seleccione un cliente</option>
                             @foreach($clientes as $cliente)
-                            <option  value="{{ $cliente->id }}" {{ old('id_cliente') == $cliente->id ? 'selected' : '' }}>
+                            <option value="{{ $cliente->id }}" {{ old('id_cliente') == $cliente->id ? 'selected' : '' }}>
                                 {{ $cliente->Nombre }} {{ $cliente->Ap_Paterno }} {{ $cliente->Ap_Materno }}
                             </option>
                             @endforeach
@@ -175,54 +173,14 @@
     </div>
 
     <div class="row">
-        <a href="/Horario" class="btn btn-warning" style="margin-left: 250px; width: 105px;" tabindex="5">CANCELAR</a>
-        <button type="submit" class="btn btn-success" style="margin-left: 15px; width: 100px;" tabindex="6">COMPRAR</button>
+        <a href="/Horario" class="btn btn-warning" style="margin-left: 250px" tabindex="5">CANCELAR</a>
+        <button type="submit" class="btn btn-success" style="margin-left: 15px" tabindex="6">COMPRAR</button>
     </div>
-
 </form>
-<br>
-
-<div class="row">
-    <button id="generateQR" class="btn btn-primary" style="margin-left: 29%; width: 110px;">PAGAR QR</button>
-    <!-- Modal -->
-    <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color: #95d8f5">
-                    <h3 class="modal-title" id="qrModalLabel" style="margin-left: 93px;"><strong>Código QR para el Pago</strong></h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" 
-                    style=" width: 40px; height:40px; background-color: #e65a51; font-size: 20px;"><strong>x</strong></button>
-                </div>
-                <div class="modal-body text-center" style="background-color: #6a6a6a; color:white">
-                    <h6><strong>Escanea este código QR para realizar el pago</strong></h6>
-                    <!-- Contenedor para el código QR -->
-                    <canvas id="qrcodeCanvas" style="margin-top: 2px; border-radius: 13px;"></canvas>
-                </div>
-                <div class="modal-footer" style="background-color: #f4acac">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                    style="background: #3186c9">CERRAR</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 @stop
 
 @section('js')
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
-<!-- Bootstrap CSS and JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <style>
-    form * {
-        all: reset;
-    }
-    form {
-        all: unset;
-        all: revert;
-    }
     #input-Asiento {
         font-weight: bold;
         width: 70px;
@@ -331,51 +289,5 @@
             selectedButton.classList.add('btn-success'); // Cambiar a verde
         }
     }
-
-    document.getElementById('generateQR').addEventListener('click', function () {
-        // Obtener los valores de los campos del formulario
-        const clienteSelect = document.getElementById('input-id_cliente');
-        const cliente = clienteSelect.options[clienteSelect.selectedIndex].text; 
-        const fecha = document.getElementById('input-Fecha').value.trim();
-        const hora = document.getElementById('input-Hora').value.trim();
-        const precio = document.getElementById('input-Precio').value.trim();
-        const ruta = document.getElementById('input-Ruta').value;
-        const minibus = document.getElementById('input-Num_Minibus').value;
-        const asiento = document.getElementById('input-Asiento').value;
-
-        // Verificar si todos los campos están completos
-        if (!cliente ||!fecha ||!hora || !precio || !ruta || !minibus || !asiento) {
-            alert("Por favor, completa todos los campos antes de generar el código QR.");
-            return;
-        }
-
-
-        // Crear el texto que queremos en el código QR
-        const qrData = `Cliente: ${cliente}\nFecha: ${fecha}\nHora: ${hora}\nPrecio: Bs ${precio}\nRuta: ${ruta}\nMinibús: ${minibus}\nAsiento: ${asiento}`;
-
-        // Limpiar cualquier QR generado anteriormente
-        const qrCanvas = document.getElementById('qrcodeCanvas');
-        const context = qrCanvas.getContext('2d');
-        context.clearRect(0, 0, qrCanvas.width, qrCanvas.height);
-
-        // Generar el código QR
-        QRCode.toCanvas(qrCanvas, qrData, { errorCorrectionLevel: 'H' }, function (error) {
-            if (error) {
-                console.error("Error al generar el código QR:", error);
-                alert("Hubo un problema al generar el código QR. Inténtalo de nuevo.");
-            } else {
-                console.log('Código QR generado correctamente.');
-            }
-        });
-
-        // Mostrar el modal
-        const qrModal = new bootstrap.Modal(document.getElementById('qrModal'), {
-            backdrop: 'static', // Evitar que se cierre haciendo clic fuera del modal
-            keyboard: false     // Evitar que se cierre con la tecla Escape
-        });
-        qrModal.show();
-    });
-
 </script>
-
 @stop

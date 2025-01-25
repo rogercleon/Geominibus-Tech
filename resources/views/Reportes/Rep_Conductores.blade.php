@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Reporte de Horarios</title>
+    <title>Reporte de Conductores</title>
     <link rel="stylesheet" href="{{ public_path('css/app.css') }}" type="text/css">
     <style>
         body {
@@ -18,6 +18,7 @@
             margin: 0;
             font-size: 18px;
         }
+
         h2 {
             text-align: center;
             margin: 0;
@@ -28,6 +29,7 @@
             margin-top: 35px;
             font-size: 24px;
         }
+
         .header {
             margin-top: 40px;
             display: flex;
@@ -35,7 +37,8 @@
             justify-content: center;
             text-align: center;
         }
-        .header .info{
+
+        .header .info {
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -99,34 +102,38 @@
             <p><b>Cochabamba - Bolivia</b></p>
         </div>
     </div>
-    
+
     <p style="text-align: right; margin-right: 25px;"><b>Fecha:</b> {{ now()->format('d/m/Y') }}</p>
 
-    <h1><b>REPORTE DE HORARIOS</b></h1>
+    <h1><b>REPORTE DE CONDUCTORES</b></h1>
     <p style="text-align: center; font-size: 14px; font-weight: bold;"><b>_______________________________________________________________________________________</b></p>
 
-    <table align="center" cellspacing="5" cellpadding="5" border="3" id="horarios" class="table table-striped" style="width:90%">
+    @if($registros->isNotEmpty())
+    <table align="center" cellspacing="5" cellpadding="5" border="3" id="buses" class="table table-striped" style="width:90%">
         <thead class="bg-primary text-white" bgcolor="#358391" style="text-emphasis-color: #FFFFFF;">
             <tr>
-                <th scope="col">Ruta</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Hora</th>
-                <th scope="col">N° Minibús</th>
-                <th scope="col">Precio</th>
+                <th scope="col">Licencia</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Edad</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Telefóno</th>
             </tr>
         </thead>
         <tbody class="bg-primary text-white" style="text-align:center">
-            @foreach($horarios as $horario)
+            @foreach($registros as $registro)
             <tr>
-                <td>{{$horario->ruta->Origen}} - {{$horario->ruta->Destino}}</td>
-                <td>{{$horario->Fecha}}</td>
-                <td>{{$horario->Hora}}</td>
-                <td>Minibús: {{$horario->asignarMinibus->minibus->Num_Minibus}}</td>
-                <td>Bs {{number_format($horario->ruta->Precio, 2, ',', '.') }}</td>
+                <td>{{$registro->Licencia}}</td>
+                <td>{{$registro->Nombre}} {{$registro->Ap_Paterno}} {{$registro->Ap_Materno}}</td>
+                <td>{{-- Calcular la edad --}} {{ \Carbon\Carbon::parse($registro->Fecha_Nac)->age }}</td>
+                <td>{{$registro->Direccion}}</td>
+                <td>{{$registro->Telefono}}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
+    @else
+    <br><p style="text-align: center; font-size: 14px;"><strong>No se encontraron conductores para los filtros seleccionados.</strong></p>
+    @endif
 
     <div class="footer">
         <p>Reporte generado por Sistema de Gestión y Monitoreo "Geominibus Tech"</p>

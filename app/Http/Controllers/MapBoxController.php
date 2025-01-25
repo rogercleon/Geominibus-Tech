@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Location;
-use App\Models\Localizacion;
+use App\Models\Minibuse;
+use App\Models\Monitoreo;
+use Illuminate\Support\Facades\DB;
 
 class MapBoxController extends Controller
 {
@@ -13,13 +14,42 @@ class MapBoxController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-        $localizaciones=Localizacion::all();
-
-        //Mapper::map(-17.4450948, -66.1294288, ['zoom' => 14]);
-        return View('Mapa2.index', compact('localizaciones'));
+        $minibuses = Minibuse::all();
+        return view('Mapa2.index', compact('minibuses'));
     }
+
+    public function getCoordinates($id)
+    {
+        $coordinates = Monitoreo::where('id_minibus', $id)->get(['Latitud', 'Longitud']);
+        return response()->json($coordinates);
+    }
+
+    public function obtenerDatosMinibus($id)
+    {
+        $asignacion = DB::table('asignar_minibuses')
+            ->join('minibuses', 'asignar_minibuses.id_minibus', '=', 'minibuses.id')
+            ->join('conductores', 'asignar_minibuses.id_conductor', '=', 'conductores.id')
+            ->select(
+                'minibuses.Num_Minibus',
+                'minibuses.Placa',
+                'conductores.Nombre',
+                'conductores.Ap_Paterno',
+                'conductores.Ap_Materno'
+            )
+            ->where('minibuses.id', $id)
+            ->first();
+
+        if ($asignacion) {
+            return response()->json($asignacion);
+        } else {
+            return response()->json(['error' => 'No se encontró información para este minibús.'], 404);
+        }
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

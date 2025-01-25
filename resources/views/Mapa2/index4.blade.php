@@ -51,7 +51,7 @@
         <header>"Monitoreo de Minibuses"</header>
 
 
-        <h3 class="seleccione">Seleccione un Minibús</h3>
+        <h3 class="seleccione">Seleccione un Minibús para mostrar su ruta</h3>
         <select id="minibus-select" class="form-control" style="width: 20%; margin: 5px 5px 10px 35px;">
             <option value="" selected disabled>Seleccione un minibús</option>
             @foreach($minibuses as $minibus)
@@ -111,74 +111,47 @@
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet" />
 
 <style>
-    /* Estilo global del Popup */
+    /* Estilo del Popup */
     .mapboxgl-popup {
-        width: 350px;
-        /* Ajustado para que el popup no sea tan grande */
+        max-width: 300px;
         font-family: 'Arial', sans-serif;
-        animation: fadeIn 0.7s ease-in-out;
     }
 
-    /* Estilo para el contenido del Popup */
     .mapboxgl-popup-content {
-        border: solid #a0c6e8 4px;
-        background-color: #c1d6ed;
-        /*background: rgb(160,198,232);
-        background: linear-gradient(90deg, rgba(160,198,232,1) 0%, rgba(202,236,246,1) 50%, rgba(160,198,232,1) 100%);*/
-        padding: 18px 5px 8px 5px;
-        border-radius: 8px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        background: linear-gradient(145deg, #ffffff, #f1f1f1);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        padding: 15px;
         color: #333;
-        max-width: 100%;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    /* Estilo de la cabecera del Popup (h3) */
     .mapboxgl-popup-content h3 {
+        margin-top: 0;
         font-size: 18px;
         font-weight: bold;
-        color: #333;
-        margin-bottom: 7px;
+        color: #2c3e50;
     }
 
-    /* Estilo de los párrafos dentro del Popup */
     .mapboxgl-popup-content p {
-        font-size: 13px;
-        margin: 0px 0px;
-        color: #555;
-        padding-left: 20px;
-        text-align: left;
-    }
-
-    /* Resaltar los campos dentro del Popup */
-    .mapboxgl-popup-content strong {
-        color: #333;
-        font-weight: bold;
+        margin: 5px 0;
         font-size: 14px;
+        color: #555;
     }
 
-    /* Efecto hover (cuando el cursor pasa sobre el popup) */
-    .mapboxgl-popup-content:hover {
-        transform: scale(1.05);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    .mapboxgl-popup-content strong {
+        color: #2c3e50;
     }
 
-    /* Estilo de la flecha del Popup */
     .mapboxgl-popup-tip {
-        border-color: #bcd3ee;
-        border-top-color: #bcd3ee;
-        border-color: transparent transparent #bcd3ee transparent;
+        border-color: transparent transparent #f1f1f1 transparent;
     }
 
-    /* Estilo para el botón de cerrar del Popup */
     .mapboxgl-popup-close-button {
         font-size: 14px;
-        width: 20px;
-        height: 20px;
-        text-align: center;
         color: #333;
-        background: #e25757;
-        border-radius: 15%;
+        background: #f1f1f1;
+        border-radius: 50%;
+        padding: 5px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
@@ -187,15 +160,15 @@
         color: white;
     }
 
-    /* Animación de desvanecimiento del Popup */
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
 
-        to {
-            opacity: 1;
-        }
+    
+    .mapboxgl-popup-content {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .mapboxgl-popup-content:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     }
 </style>
 
@@ -254,78 +227,71 @@
                 el.className = 'custom-marker';
                 el.innerHTML = `<i class="fa-solid fa-van-shuttle" style="color: 000000; font-size: 25px;"></i>`;
 
-                // **Nueva llamada AJAX para obtener información del minibús**
-                $.getJSON(`/datos-minibus/${minibusId}`, function(minibusData) {
-                    const {
-                        Num_Minibus,
-                        Placa,
-                        Nombre,
-                        Ap_Paterno,
-                        Ap_Materno
-                    } = minibusData;
-
-                    // Crear un Popup con la información del minibús
-                    const popup = new mapboxgl.Popup({
+                // Crear un Popup con la información del minibús
+                const popup = new mapboxgl.Popup({
                         offset: 25
-                    }).setHTML(`
-                    <h3>Información del Minibús</h3>
-                    <p><strong>Conductor:</strong> ${Nombre} ${Ap_Paterno} ${Ap_Materno}</p>
-                    <p><strong>N° Minibús:</strong> ${Num_Minibus}</p>
-                    <p><strong>Placa:</strong> ${Placa}</p>
+                    })
+                    .setHTML(`
+                        <h3>Información del Minibús</h3>
+                        <p><strong>Número:</strong> 13</p>
+                        <p><strong>Placa:</strong> 4513vd</p>
+                        <p><strong>Conductor:</strong> Juanito</p>
+                    `);
 
-                    
-                `);
+                // Agregar el marcador personalizado al mapa y asociarlo con el Popup
+                marker = new mapboxgl.Marker(el)
+                    .setLngLat(lastCoord)
+                    .setPopup(popup) // Asociar el Popup al marcador
+                    .addTo(map);
 
-                    // Agregar el marcador personalizado al mapa y asociarlo con el Popup
-                    marker = new mapboxgl.Marker(el)
-                        .setLngLat(lastCoord)
-                        .setPopup(popup) // Asociar el Popup al marcador
-                        .addTo(map);
+                // Agregar el marcador personalizado al mapa
+                marker = new mapboxgl.Marker(el)
+                    .setLngLat(lastCoord)
+                    .addTo(map);
 
-                    // Crear un ID único para la ruta
-                    routeSourceId = `route-${minibusId}`;
+                /*marker = new mapboxgl.Marker({
+                    color
+                }).setLngLat(lastCoord).addTo(map);*/
 
-                    // Agregar la ruta al mapa
-                    map.addSource(routeSourceId, {
-                        type: 'geojson',
-                        data: {
-                            type: 'Feature',
-                            properties: {},
-                            geometry: {
-                                type: 'LineString',
-                                coordinates: route
-                            }
+                // Crear un ID único para la ruta
+                routeSourceId = `route-${minibusId}`;
+
+                // Agregar la ruta al mapa
+                map.addSource(routeSourceId, {
+                    type: 'geojson',
+                    data: {
+                        type: 'Feature',
+                        properties: {},
+                        geometry: {
+                            type: 'LineString',
+                            coordinates: route
                         }
-                    });
+                    }
+                });
 
-                    map.addLayer({
-                        id: routeSourceId,
-                        type: 'line',
-                        source: routeSourceId,
-                        layout: {
-                            'line-join': 'round',
-                            'line-cap': 'round'
-                        },
-                        paint: {
-                            'line-color': color,
-                            'line-width': 8
-                        }
-                    });
+                map.addLayer({
+                    id: routeSourceId,
+                    type: 'line',
+                    source: routeSourceId,
+                    layout: {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    paint: {
+                        'line-color': color,
+                        'line-width': 8
+                    }
+                });
 
-                    // Hacer zoom al último punto
-                    map.flyTo({
-                        center: lastCoord,
-                        zoom: 15
-                    });
-                }).fail(function() {
-                    alert('No se pudo obtener la información del minibús.');
+                map.flyTo({
+                    center: lastCoord,
+                    zoom: 15
                 });
             } else {
-                alert('No hay datos de geolocalización disponibles para este minibús.');
+                //alert('No hay datos de geolocalización disponibles para este minibús.');
             }
         });
     });
-
 
 
 

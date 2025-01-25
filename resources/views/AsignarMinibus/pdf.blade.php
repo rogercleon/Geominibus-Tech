@@ -111,7 +111,6 @@
     <table align="center" cellspacing="5" cellpadding="5" border="3" id="buses" class="table table-striped" style="width:90%">
         <thead class="bg-primary text-white" bgcolor="#358391" style="text-emphasis-color: #FFFFFF;">
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Conductor</th>
                 <th scope="col">Minibús</th>
                 <th scope="col">Placa</th>
@@ -120,7 +119,6 @@
         <tbody class="bg-primary text-white" style="text-align:center">
             @foreach($asignarminibuses as $asignarminibus)
             <tr>
-                <td>{{$asignarminibus->id}}</td>
                 <td>{{ $asignarminibus->conductor->Nombre }} {{ $asignarminibus->conductor->Ap_Paterno }} {{ $asignarminibus->conductor->Ap_Materno }}</td>
                 <td>{{ $asignarminibus->minibus->Num_Minibus }}</td>
                 <td>{{ $asignarminibus->minibus->Placa }}</td>

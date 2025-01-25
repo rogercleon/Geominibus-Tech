@@ -243,8 +243,8 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'Buscar',
         ],
-        
-        ['header' => 'USUARIOS','can' => 'Administrador',],
+
+        ['header' => 'USUARIOS', 'can' => 'Administrador',],
         [
             'text'    => 'Usuarios',
             'icon'    => 'fa fa-user-tie',
@@ -346,6 +346,14 @@ return [
             'icon'        => 'fa fa-map-marker',
             'icon_color' => 'cyan',
             'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Reportes',
+            'url'         => '/Reportes',
+            'icon'        => 'fa fa-clipboard',
+            'icon_color' => 'cyan',
+            'label_color' => 'success',
+            'can' => 'Ver cliente',
         ],
         ['header' => 'CONFIGURACIÓN DE LA CUENTA'],
         [

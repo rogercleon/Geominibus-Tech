@@ -36,6 +36,7 @@
     <link rel="stylesheet" href="{{asset('css/Principal.css')}}">
     <link rel="stylesheet" href="{{asset('css/Acercade.css')}}">
 
+
     <!-- Styles -->
     <style>
         /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */

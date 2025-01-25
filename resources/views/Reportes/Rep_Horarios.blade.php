@@ -18,6 +18,7 @@
             margin: 0;
             font-size: 18px;
         }
+
         h2 {
             text-align: center;
             margin: 0;
@@ -28,6 +29,7 @@
             margin-top: 35px;
             font-size: 24px;
         }
+
         .header {
             margin-top: 40px;
             display: flex;
@@ -35,7 +37,8 @@
             justify-content: center;
             text-align: center;
         }
-        .header .info{
+
+        .header .info {
             margin-bottom: 20px;
             display: flex;
             align-items: center;
@@ -99,34 +102,48 @@
             <p><b>Cochabamba - Bolivia</b></p>
         </div>
     </div>
-    
+
     <p style="text-align: right; margin-right: 25px;"><b>Fecha:</b> {{ now()->format('d/m/Y') }}</p>
 
     <h1><b>REPORTE DE HORARIOS</b></h1>
     <p style="text-align: center; font-size: 14px; font-weight: bold;"><b>_______________________________________________________________________________________</b></p>
 
-    <table align="center" cellspacing="5" cellpadding="5" border="3" id="horarios" class="table table-striped" style="width:90%">
-        <thead class="bg-primary text-white" bgcolor="#358391" style="text-emphasis-color: #FFFFFF;">
+    @if($horarios->isNotEmpty())
+    <table align="center" cellspacing="5" cellpadding="5" border="3" class="table table-striped" style="width:90%">
+        <thead class="bg-primary text-white">
             <tr>
-                <th scope="col">Ruta</th>
-                <th scope="col">Fecha</th>
-                <th scope="col">Hora</th>
-                <th scope="col">N° Minibús</th>
-                <th scope="col">Precio</th>
+                <th>Ruta</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Precio</th>
+                <th>N° Minibús</th>
+                <th>Conductor</th>
+                <th>Placa</th>
             </tr>
         </thead>
-        <tbody class="bg-primary text-white" style="text-align:center">
+        <tbody>
             @foreach($horarios as $horario)
             <tr>
-                <td>{{$horario->ruta->Origen}} - {{$horario->ruta->Destino}}</td>
-                <td>{{$horario->Fecha}}</td>
-                <td>{{$horario->Hora}}</td>
-                <td>Minibús: {{$horario->asignarMinibus->minibus->Num_Minibus}}</td>
-                <td>Bs {{number_format($horario->ruta->Precio, 2, ',', '.') }}</td>
+                <td>{{ $horario->ruta->Origen }} - {{ $horario->ruta->Destino }}</td>
+                <td>{{ \Carbon\Carbon::parse($horario->Fecha)->format('d/m/Y') }}</td>
+                <td>{{ $horario->Hora }}</td>
+                <td>{{ number_format($horario->ruta->Precio, 2) }} Bs.</td>
+                <td>Minibús {{ $horario->asignarMinibus->minibus->Num_Minibus ?? 'N/A' }}</td>
+                <td>
+                    @if($horario->asignarMinibus && $horario->asignarMinibus->conductor)
+                        {{ $horario->asignarMinibus->conductor->Nombre }} {{ $horario->asignarMinibus->conductor->Ap_Paterno }}
+                    @else
+                        Sin asignar
+                    @endif
+                </td>
+                <td>{{ $horario->asignarMinibus->minibus->Placa ?? 'N/A' }}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
+    @else
+    <br><p style="text-align: center; font-size: 14px;"><strong>No se encontraron horarios para los filtros seleccionados.</strong></p>
+    @endif
 
     <div class="footer">
         <p>Reporte generado por Sistema de Gestión y Monitoreo "Geominibus Tech"</p>
@@ -135,7 +152,5 @@
     <div class="page-number">
         Página: {PAGE_NUM} de {PAGE_COUNT}
     </div>
-
 </body>
-
 </html>

@@ -142,9 +142,7 @@
             <tr>
                 <th>Descripción</th>
                 <th>Cantidad</th>
-                <th>Largo (cm/Bs)</th>
-                <th>Ancho (cm/Bs)</th>
-                <th>Alto (cm/Bs)</th>
+                <th>Peso (Kg/Bs)</th>
                 <th>Precio</th>
                 <th>Acción</th>
             </tr>
@@ -154,9 +152,7 @@
             <tr>
                 <td><input type="text" name="detalles[{{ $index }}][Descripcion]" class="form-control descripcion" value="{{ $detalle->Descripcion }}" required></td>
                 <td><input type="number" name="detalles[{{ $index }}][Cantidad]" class="form-control cantidad" value="{{ $detalle->Cantidad }}" required></td>
-                <td><input type="number" name="detalles[{{ $index }}][Largo]" class="form-control dimension largo" value="{{ $detalle->Largo }}" required></td>
-                <td><input type="number" name="detalles[{{ $index }}][Ancho]" class="form-control dimension ancho" value="{{ $detalle->Ancho }}" required></td>
-                <td><input type="number" name="detalles[{{ $index }}][Alto]" class="form-control dimension alto" value="{{ $detalle->Alto }}" required></td>
+                <td><input type="number" name="detalles[{{ $index }}][Peso]" class="form-control peso" value="{{ $detalle->Peso }}" required></td>
                 <td><input type="number" name="detalles[{{ $index }}][Precio]" class="form-control precio" value="{{ $detalle->Precio }}" readonly></td>
                 <td><button type="button" class="btn btn-danger btn-sm remove-row"><i class="fas fa-trash-alt"></i></button></td>
             </tr>
@@ -186,9 +182,7 @@
             <tr>
                 <td><input type="text" name="detalles[${detallesCount}][Descripcion]" class="form-control" required></td>
                 <td><input type="number" name="detalles[${detallesCount}][Cantidad]" class="form-control cantidad" min="1" required></td>
-                <td><input type="number" name="detalles[${detallesCount}][Largo]" class="form-control dimension" min="0" step="0.01" required></td>
-                <td><input type="number" name="detalles[${detallesCount}][Ancho]" class="form-control dimension" min="0" step="0.01" required></td>
-                <td><input type="number" name="detalles[${detallesCount}][Alto]" class="form-control dimension" min="0" step="0.01" required></td>
+                <td><input type="number" name="detalles[${detallesCount}][Peso]" class="form-control peso" min="0" step="0.01" required></td>
                 <td><input type="number" name="detalles[${detallesCount}][Precio]" class="form-control precio" readonly></td>
                 <td><button type="button" class="btn btn-danger remove-row"><i class="fas fa-trash-alt"></i></button></td>
             </tr>
@@ -201,21 +195,26 @@
         calcularPrecioTotal(); // Recalcula el precio total después de eliminar la fila
     });
 
-    // Calcular precio por detalle (cantidad y dimensiones)
-    $(document).on('input', '.dimension, .cantidad', function () {
+    // Calcular precio por detalle (peso y cantidad)
+    $(document).on('input', '.peso, .cantidad', function () {
         const fila = $(this).closest('tr');
-        const largo = parseFloat(fila.find('input[name*="Largo"]').val()) || 0;
-        const ancho = parseFloat(fila.find('input[name*="Ancho"]').val()) || 0;
-        const alto = parseFloat(fila.find('input[name*="Alto"]').val()) || 0;
+        const peso = parseFloat(fila.find('input[name*="Peso"]').val()) || 0;
         const cantidad = parseInt(fila.find('input[name*="Cantidad"]').val()) || 0;
 
-        // Calcular precios individuales según las reglas
-        const precioLargo = largo > 100 ? 30 : largo > 50 ? 20 : 10;
-        const precioAncho = ancho > 100 ? 30 : ancho > 50 ? 20 : 10;
-        const precioAlto = alto > 100 ? 30 : alto > 50 ? 20 : 10;
+        // Lógica de precios basada en el peso
+        let precioBase = 15; // Precio inicial
+        if (peso > 60) {
+            precioBase = 50; // Peso mayor a 60 kg
+        } else if (peso > 50) {
+            precioBase = 30; // Peso entre 51 kg y 60 kg
+        } else if (peso > 40) {
+            precioBase = 25; // Peso entre 41 kg y 50 kg
+        } else if (peso > 30) {
+            precioBase = 20; // Peso entre 31 kg y 40 kg
+        }
 
         // Calcular el precio total para la fila
-        const precio = (precioLargo + precioAncho + precioAlto) * cantidad;
+        const precio = precioBase * cantidad;
 
         // Actualizar el campo Precio de la fila
         fila.find('.precio').val(precio.toFixed(2));

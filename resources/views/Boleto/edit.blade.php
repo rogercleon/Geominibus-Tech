@@ -176,9 +176,41 @@
         <button type="submit" class="btn btn-success" style="margin-left: 15px" tabindex="6">ACTUALIZAR</button>
     </div>
 </form>
+
+<br>
+
+<div class="row">
+    <button id="generateQR" class="btn btn-primary" style="margin-left: 29%; width: 105px;">PAGAR QR</button>
+    <!-- Modal -->
+    <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #95d8f5">
+                    <h3 class="modal-title" id="qrModalLabel" style="margin-left: 93px;"><strong>Código QR para el Pago</strong></h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" 
+                    style=" width: 40px; height:40px; background-color: #e65a51; font-size: 20px;"><strong>x</strong></button>
+                </div>
+                <div class="modal-body text-center" style="background-color: #6a6a6a; color:white">
+                    <h6><strong>Escanea este código QR para realizar el pago</strong></h6>
+                    <!-- Contenedor para el código QR -->
+                    <canvas id="qrcodeCanvas" style="margin-top: 2px; border-radius: 13px;"></canvas>
+                </div>
+                <div class="modal-footer" style="background-color: #f4acac">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    style="background: #3186c9">CERRAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @stop
 
 @section('js')
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+<!-- Bootstrap CSS and JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <style>
     #input-Asiento {
         font-weight: bold;
@@ -243,47 +275,92 @@
 </style>
 
 <script>
-function setAsiento(asiento) {
-    // Evitar la selección del asiento 1, ya que está deshabilitado
-    if (asiento === 1) {
-        document.getElementById('input-Asiento').value = '';
-        alert('El asiento 1 no está disponible.');
-        return;
-    }
+    function setAsiento(asiento) {
+        // Evitar la selección del asiento 1, ya que está deshabilitado
+        if (asiento === 1) {
+            document.getElementById('input-Asiento').value = '';
+            alert('El asiento 1 no está disponible.');
+            return;
+        }
 
-    // Actualizar el input con el asiento seleccionado
-    document.getElementById('input-Asiento').value = asiento;
+        // Actualizar el input con el asiento seleccionado
+        document.getElementById('input-Asiento').value = asiento;
 
-    // Total de asientos
-    const totalAsientos = {{ $horario->asignarMinibus->minibus->Num_Asientos }};
+        // Total de asientos
+        const totalAsientos = {{ $horario->asignarMinibus->minibus->Num_Asientos }};
 
-    // Primero, restablecemos todos los asientos a su color predeterminado
-    for (let i = 1; i <= totalAsientos; i++) {
-        const button = document.getElementById(`seat-${i}`);
-        if (button) {
-            // Restablecer todos los botones a su color original
-            button.classList.remove('btn-success', 'btn-warning', 'btn-danger', 'btn-secondary');
-            
-            // Aseguramos que el asiento 1 sea siempre rojo
-            if (i === 1) {
-                button.classList.add('btn-danger');
+        // Primero, restablecemos todos los asientos a su color predeterminado
+        for (let i = 1; i <= totalAsientos; i++) {
+            const button = document.getElementById(`seat-${i}`);
+            if (button) {
+                // Restablecer todos los botones a su color original
+                button.classList.remove('btn-success', 'btn-warning', 'btn-danger', 'btn-secondary');
+                
+                // Aseguramos que el asiento 1 sea siempre rojo
+                if (i === 1) {
+                    button.classList.add('btn-danger');
+                }
+                // Verificamos si el asiento está ocupado
+                else if ({{ json_encode($asientosOcupados) }}.includes(i)) {
+                    button.classList.add('btn-warning');
+                } 
+                else {
+                    button.classList.add('btn-secondary');
+                }
             }
-            // Verificamos si el asiento está ocupado
-            else if ({{ json_encode($asientosOcupados) }}.includes(i)) {
-                button.classList.add('btn-warning');
-            } 
-            else {
-                button.classList.add('btn-secondary');
-            }
+        }
+
+        // Cambiar el color del asiento seleccionado a verde (btn-success)
+        const selectedButton = document.getElementById(`seat-${asiento}`);
+        if (selectedButton) {
+            selectedButton.classList.remove('btn-secondary', 'btn-warning', 'btn-danger');
+            selectedButton.classList.add('btn-success');  // Aquí cambiamos a verde
         }
     }
 
-    // Cambiar el color del asiento seleccionado a verde (btn-success)
-    const selectedButton = document.getElementById(`seat-${asiento}`);
-    if (selectedButton) {
-        selectedButton.classList.remove('btn-secondary', 'btn-warning', 'btn-danger');
-        selectedButton.classList.add('btn-success');  // Aquí cambiamos a verde
-    }
-}
+
+    document.getElementById('generateQR').addEventListener('click', function () {
+        // Obtener los valores de los campos del formulario
+        const clienteSelect = document.getElementById('input-id_cliente');
+        const cliente = clienteSelect.options[clienteSelect.selectedIndex].text; 
+        const fecha = document.getElementById('input-Fecha').value.trim();
+        const hora = document.getElementById('input-Hora').value.trim();
+        const precio = document.getElementById('input-Precio').value.trim();
+        const ruta = document.getElementById('input-Ruta').value;
+        const minibus = document.getElementById('input-Num_Minibus').value;
+        const asiento = document.getElementById('input-Asiento').value;
+
+        // Verificar si todos los campos están completos
+        if (!cliente ||!fecha ||!hora || !precio || !ruta || !minibus || !asiento) {
+            alert("Por favor, completa todos los campos antes de generar el código QR.");
+            return;
+        }
+
+
+        // Crear el texto que queremos en el código QR
+        const qrData = `Cliente: ${cliente}\nFecha: ${fecha}\nHora: ${hora}\nPrecio: Bs ${precio}\nRuta: ${ruta}\nMinibús: ${minibus}\nAsiento: ${asiento}`;
+
+        // Limpiar cualquier QR generado anteriormente
+        const qrCanvas = document.getElementById('qrcodeCanvas');
+        const context = qrCanvas.getContext('2d');
+        context.clearRect(0, 0, qrCanvas.width, qrCanvas.height);
+
+        // Generar el código QR
+        QRCode.toCanvas(qrCanvas, qrData, { errorCorrectionLevel: 'H' }, function (error) {
+            if (error) {
+                console.error("Error al generar el código QR:", error);
+                alert("Hubo un problema al generar el código QR. Inténtalo de nuevo.");
+            } else {
+                console.log('Código QR generado correctamente.');
+            }
+        });
+
+        // Mostrar el modal
+        const qrModal = new bootstrap.Modal(document.getElementById('qrModal'), {
+            backdrop: 'static', // Evitar que se cierre haciendo clic fuera del modal
+            keyboard: false     // Evitar que se cierre con la tecla Escape
+        });
+        qrModal.show();
+    });
 </script>
 @stop

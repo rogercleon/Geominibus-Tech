@@ -111,20 +111,18 @@
     <table align="center" cellspacing="5" cellpadding="5" border="3" id="boletos" class="table table-striped" style="width:90%">
         <thead class="bg-primary text-white" bgcolor="#358391">
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Cliente</th>
                 <th scope="col">Ruta</th>
                 <th scope="col">Fecha</th>
                 <th scope="col">Hora</th>
                 <th scope="col">N° Minibús</th>
-                <th scope="col">Asiento</th>
+                <th scope="col">N° Asiento</th>
                 <th scope="col">Precio</th>
             </tr>
         </thead>
         <tbody>
             @foreach($boletos as $boleto)
             <tr>
-                <td>{{ $boleto->id }}</td>
                 <td>{{ $boleto->cliente->Nombre }} {{ $boleto->cliente->Ap_Paterno }} {{ $boleto->cliente->Ap_Materno }}</td>
                 <td>{{ $boleto->horario->ruta->Origen }} - {{ $boleto->horario->ruta->Destino }}</td>                
                 <td>{{ $boleto->horario->Fecha }}</td>

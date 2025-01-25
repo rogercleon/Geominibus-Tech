@@ -64,8 +64,8 @@
         <div class="row">
             <label class="col-sm-2 col-form-label">{{ __('Fecha:') }}</label>
             <div class="col-sm-4">
-                <div class="form-group{{ $errors->has('Fecha') ? ' has-danger' : '' }}">
-                    <input class="form-control{{ $errors->has('Fecha') ? ' is-invalid' : '' }}" name="Fecha" id="input-Fecha" type="date" value="{{ old('Fecha', date('Y-m-d')) }}" required />
+                <div class="form-group{{ $errors->has('Fecha') ? ' has-danger' : '' }}"> 
+                    <input class="form-control{{ $errors->has('Fecha') ? ' is-invalid' : '' }}" type="date" name="Fecha" id="input-Fecha" value="{{ old('Fecha', date('Y-m-d')) }}" required />
                     @if ($errors->has('Fecha'))
                     <span id="Fecha-error" class="error text-danger" for="input-Fecha">{{ $errors->first('Fecha') }}</span>
                     @endif

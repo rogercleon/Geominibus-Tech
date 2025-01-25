@@ -23,9 +23,7 @@ class CreateDetalleEncomiendasTable extends Migration
                 ->nullOnDelete();
             $table->string('Descripcion');
             $table->integer('Cantidad');
-            $table->integer('Largo');
-            $table->integer('Ancho');
-            $table->integer('Alto');
+            $table->integer('Peso');
             $table->float('Precio',8,2);
             $table->timestamps();
         });

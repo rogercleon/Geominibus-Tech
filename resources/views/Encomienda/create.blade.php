@@ -142,10 +142,12 @@
             <p><a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-info-circle"></i> Información</a></p>
             <div class="collapse" id="collapseExample">
                 <div class="card card-body">
-                    Dimesión / Precio <br>
-                    0-50 cm/10 Bs <br>
-                    50-100 cm/20 Bs <br>
-                    100-200 cm/30 Bs
+                    Peso / Precio <br>
+                    0-30 Kg/15 Bs <br>
+                    30-40 Kg/20 Bs <br>
+                    40-50 Kg/25 Bs <br>
+                    50-60 Kg/30 Bs <br>
+                    60-100 Kg/50 Bs <br>
                 </div>
             </div>
         </div>
@@ -158,9 +160,7 @@
             <tr>
                 <th>Descripción</th>
                 <th>Cantidad</th>
-                <th>Largo (cm/Bs)</th>
-                <th>Ancho (cm/Bs)</th>
-                <th>Alto (cm/Bs)</th>
+                <th>Peso (Kg/Bs)</th>
                 <th>Precio</th>
                 <th>Acción</th>
             </tr>
@@ -169,9 +169,7 @@
             <tr>
                 <td><input type="text" name="detalles[0][Descripcion]" class="form-control form-control-sm" required></td>
                 <td><input type="number" name="detalles[0][Cantidad]" class="form-control form-control-sm cantidad" required></td>
-                <td><input type="number" name="detalles[0][Largo]" class="form-control form-control-sm dimension" required></td>
-                <td><input type="number" name="detalles[0][Ancho]" class="form-control form-control-sm dimension" required></td>
-                <td><input type="number" name="detalles[0][Alto]" class="form-control form-control-sm dimension" required></td>
+                <td><input type="number" name="detalles[0][Peso]" class="form-control form-control-sm peso" required></td>
                 <td><input type="number" name="detalles[0][Precio]" id="Precio" class="form-control form-control-sm precio" readonly></td>
                 <td><button type="button" class="btn btn-danger btn-sm remove-row"><i class="fas fa-trash-alt"></i></button></td>
             </tr>
@@ -199,58 +197,57 @@
     $('#add-row').on('click', function() {
         detallesCount++;
         $('#detalles-table tbody').append(`
-            <tr>
-                <td><input type="text" name="detalles[${detallesCount}][Descripcion]" class="form-control" required></td>
-                <td><input type="number" name="detalles[${detallesCount}][Cantidad]" class="form-control cantidad" required></td>
-                <td><input type="number" name="detalles[${detallesCount}][Largo]" class="form-control dimension" required></td>
-                <td><input type="number" name="detalles[${detallesCount}][Ancho]" class="form-control dimension" required></td>
-                <td><input type="number" name="detalles[${detallesCount}][Alto]" class="form-control dimension" required></td>
-                <td><input type="number" name="detalles[${detallesCount}][Precio]" class="form-control precio" readonly></td>
-                <td><button type="button" class="btn btn-danger remove-row"><i class="fas fa-trash-alt"></i></button></td>
-            </tr>
-        `);
+        <tr>
+            <td><input type="text" name="detalles[${detallesCount}][Descripcion]" class="form-control" required></td>
+            <td><input type="number" name="detalles[${detallesCount}][Cantidad]" class="form-control cantidad" required></td>
+            <td><input type="number" name="detalles[${detallesCount}][Peso]" class="form-control peso" required></td>
+            <td><input type="number" name="detalles[${detallesCount}][Precio]" class="form-control precio" readonly></td>
+            <td><button type="button" class="btn btn-danger btn-sm remove-row"><i class="fas fa-trash-alt"></i></button></td>
+        </tr>
+    `);
     });
 
-    // Eliminar una fila de detalle
+    // Eliminar una fila de detalles
     $(document).on('click', '.remove-row', function() {
         $(this).closest('tr').remove();
         calcularPrecioTotal();
     });
 
-    // Calcular precio por detalle
-    $(document).on('input', '.dimension, .cantidad', function() {
-        const fila = $(this).closest('tr');
-        const largo = parseFloat(fila.find('input[name*="Largo"]').val()) || 0;
-        const ancho = parseFloat(fila.find('input[name*="Ancho"]').val()) || 0;
-        const alto = parseFloat(fila.find('input[name*="Alto"]').val()) || 0;
-        const cantidad = parseInt(fila.find('input[name*="Cantidad"]').val()) || 0;
+    // Calcular el precio de cada detalle en función del peso y cantidad
+    $(document).on('input', '.peso, .cantidad', function() {
+        const row = $(this).closest('tr');
+        const peso = parseFloat(row.find('input[name*="Peso"]').val()) || 0;
+        const cantidad = parseInt(row.find('input[name*="Cantidad"]').val()) || 0;
 
-        // Calcular precio para cada dimensión según las reglas
-        const precioLargo = largo > 100 ? 30 : largo > 50 ? 20 : 10;
-        const precioAncho = ancho > 100 ? 30 : ancho > 50 ? 20 : 10;
-        const precioAlto = alto > 100 ? 30 : alto > 50 ? 20 : 10;
+        // Lógica de precios basada en el peso
+        let precioBase = 15; // Precio inicial
+        if (peso > 60) {
+            precioBase = 50; // Peso mayor a 60 kg
+        } else if (peso > 50) {
+            precioBase = 30; // Peso entre 51 kg y 60 kg
+        } else if (peso > 40) {
+            precioBase = 25; // Peso entre 41 kg y 50 kg
+        } else if (peso > 30) {
+            precioBase = 20; // Peso entre 31 kg y 40 kg
+        }
 
-        // Calcular el precio total para la fila
-        const precio = (precioLargo + precioAncho + precioAlto) * cantidad;
+        // Calcular el precio total del detalle
+        const precio = precioBase * cantidad;
+        row.find('.precio').val(precio.toFixed(2));
 
-        // Actualizar el campo Precio de la fila
-        fila.find('.precio').val(precio.toFixed(2));
-
-        // Recalcular el precio total general
+        // Recalcular el precio total
         calcularPrecioTotal();
     });
 
-    // Calcular el precio total
+    // Calcular el precio total de la encomienda
     function calcularPrecioTotal() {
         let total = 0;
-        // Iteramos sobre cada campo de precio
         $('.precio').each(function() {
             const precio = parseFloat($(this).val()) || 0;
             total += precio;
         });
 
-        // Establecer el valor del campo PrecioTotal como número
-        $('#input-PrecioTotal').val(total.toFixed(2)); // Aseguramos que el valor sea un número con 2 decimales
+        $('#input-PrecioTotal').val(total.toFixed(2));
     }
 </script>
 @stop

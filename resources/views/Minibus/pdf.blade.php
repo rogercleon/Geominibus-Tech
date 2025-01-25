@@ -108,7 +108,6 @@
     <table align="center" cellspacing="5" cellpadding="5" border="3" id="buses" class="table table-striped" style="width:90%">
         <thead class="bg-primary text-white" bgcolor="#358391" style="text-emphasis-color: #FFFFFF;">
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Num Minibús</th>
                 <th scope="col">Num Asientos</th>
                 <th scope="col">Num Chasis</th>
@@ -118,7 +117,6 @@
         <tbody class="bg-primary text-white" style="text-align:center">
             @foreach($minibuses as $minibus)
             <tr>
-                <td>{{$minibus->id}}</td>
                 <td>{{$minibus->Num_Minibus}}</td>
                 <td>{{$minibus->Num_Asientos}}</td>
                 <td>{{$minibus->Num_Chasis}}</td>

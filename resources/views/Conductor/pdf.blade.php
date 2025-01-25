@@ -108,7 +108,6 @@
     <table align="center" cellspacing="5" cellpadding="5" border="3" id="buses" class="table table-striped" style="width:90%">
         <thead class="bg-primary text-white" bgcolor="#358391" style="text-emphasis-color: #FFFFFF;">
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Licencia</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Edad</th>
@@ -119,7 +118,6 @@
         <tbody class="bg-primary text-white" style="text-align:center">
             @foreach($conductores as $conductor)
             <tr>
-                <td>{{$conductor->id}}</td>
                 <td>{{$conductor->Licencia}}</td>
                 <td>{{$conductor->Nombre}} {{$conductor->Ap_Paterno}} {{$conductor->Ap_Materno}}</td>
                 <td>{{-- Calcular la edad --}} {{ \Carbon\Carbon::parse($conductor->Fecha_Nac)->age }}</td>
